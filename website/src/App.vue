@@ -3,7 +3,7 @@
     <nav-drawer :open="open" @input="toggle" />
     <nav-topbar @open="open = !open" />
 
-    <v-main id="anni" :class="{ mobile: $vuetify.breakpoint.mobile }">
+    <v-main id="anni" :class="{ mobile: $vuetify.breakpoint.xs }">
       <router-view />
     </v-main>
 

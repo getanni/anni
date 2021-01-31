@@ -12,7 +12,7 @@
 
     <v-spacer></v-spacer>
 
-    <div v-show="!$vuetify.breakpoint.mobile">
+    <div v-show="!$vuetify.breakpoint.xs">
       <v-btn text to="/docs">
         <v-icon color="grey" left>mdi-help-circle</v-icon>
         Docs
