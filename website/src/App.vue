@@ -23,7 +23,6 @@
 
 <style>
   #anni { padding: 64px 0!important; }
-  #logo { height: 30px; margin: 7px 10px 0 15px; }
   #home { height: 25px; margin: 0 30px 0 0; }
   .anni, .v-btn.anni { color: #6666f7; }
   h3 {
