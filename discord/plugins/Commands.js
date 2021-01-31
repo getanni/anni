@@ -83,6 +83,7 @@ module.exports = Anni => {
       return Anni.Reply(Msg, help).dm()
     },
     clear: function (Msg, force) {
+      if (!Msg.guild) return
       let can = Anni.Bot.Can.Clean(Msg) && (!Msg.tests || force)
       return can ? Msg.delete() : false
     },
