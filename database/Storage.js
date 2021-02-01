@@ -51,7 +51,11 @@ module.exports = Model => {
   }
 
   // array helpers
-  Model.$list = (a = []) => Array.isArray(a) ? a : JSON.parse(a)
+  Model.$list = (arr = []) => {
+    if (Array.isArray(arr)) return arr
+    let list = JSON.parse(arr)
+    return list.indexOf ? list : []
+  }
 
   Model.$push = (arr, val) => {
     let list = Model.$list(arr)
