@@ -11,7 +11,8 @@ module.exports = Anni => {
       // define parser helper to minimize text
       let parse = (str) => Anni.Lang.Parse(Msg, str, values)
       // extract text
-      let text = parse(data.text); if (text) delete data.text
+      let text = data.text ? parse(data.text) : false;
+      if (text) delete data.text
       // define our base embed
       let embed = { author: {}, fields: [], color: Msg.color || '0xD18FE8' }
       // join description arrays with new line
