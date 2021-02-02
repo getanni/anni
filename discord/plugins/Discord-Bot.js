@@ -21,8 +21,16 @@ module.exports = Anni => {
 
     User: async function (Msg, query) {
       if (!Msg.auth) return false
-      let fetched = await Msg.auth.members.fetch({ query, limit: 1 })
-      return fetched.size ? fetched.entries().next().value[1] : false
+
+      if (query.indexOf('<') === 0) {
+        let user = await Msg.auth.members.fetch(Anni.Str.strip(query))
+        if (user) return user
+      } else {
+        let user = await Msg.auth.members.fetch({ query, limit: 1 })
+        if (user.size) return user.entries().next().value[1]
+      }
+
+      return false
     },
     Channel: function (Msg, str, id) {
       let chan = Anni.Str.strip(str)
