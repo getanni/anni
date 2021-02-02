@@ -4,7 +4,6 @@ module.exports = async (Anni, Msg) => {
   if (!Anni.ready || Msg.author.bot) return
 
   let message = Msg.content
-  let mention = `<@!${Anni.user.id}>`
   let guildID = Msg.guild ? Msg.guild.id : false
   
   // ignore if paused, delete if in paused channel
