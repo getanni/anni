@@ -50,7 +50,7 @@ module.exports = {
 
     // add actions if any, otherwise add empty message
     if (list) for (let action of list) {
-      let imgs = action.list ? JSON.parse(action.list).length : 0
+      let imgs = action.list ? Anni.$list(action.list).length : 0
       let line = `**${action.name}**: \`${Anni.Escape(action.text)}\``
       if (imgs > 0) line += ` *(${imgs} Images)*`
       post.desc.push(line)
