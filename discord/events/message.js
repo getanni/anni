@@ -14,8 +14,12 @@ module.exports = async (Anni, Msg) => {
   if (working) { Msg.delete(); Anni.Reply(Msg, respond).dm() }
 
   // check for mention
-  let holler = message.indexOf(mention) === 0
-  if (holler)  message = message.split(mention).join('').trim()
+  let ping1 = `<@${Anni.user.id}>`
+  let ping2 = `<@!${Anni.user.id}>`
+  let ding1 = message.indexOf(ping1) === 0
+  let ding2 = message.indexOf(ping2) === 0
+  if (ding1)  message = message.split(ping1).join('').trim()
+  if (ding2)  message = message.split(ping2).join('').trim()
 
   let content = message.split(' ')
   let trigger = content.shift().toLowerCase()
@@ -25,7 +29,7 @@ module.exports = async (Anni, Msg) => {
   Msg.prefix = Anni.Commands.prefixed(trigger, prefix)
   Msg.suffix = Anni.Commands.suffixed(trigger, suffix)
 
-  if (guildID && !(holler || Msg.prefix || Msg.suffix)) return
+  if (guildID && !(ding1 || ding2 || Msg.prefix || Msg.suffix)) return
   if (guildID) Anni.Cache.server(Msg.author.id, guildID)
 
   // if stopped don't allow any commands
