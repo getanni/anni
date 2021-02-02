@@ -10,13 +10,13 @@ module.exports = {
   help: {
     head: "~/clear [amount]",
     desc: [
-      "Delete [amount] messages from the current channel.",
+      "Delete [amount] (up to 100) messages from the current channel.",
       "{{ ~/clear 10 }}"
     ]
   },
 
   lang: {
-    limit: "Amount must be between 1 and 300.",
+    limit: "Amount must be between 1 and 100.",
     perms: "I can't delete messages in this channel.",
     parts: "Cleared {done} of {total} messages, the rest were too old to clear - try using `~/remove` to remove them.",
     clear: "Successfully cleared {total} messages.",
