@@ -89,6 +89,10 @@ module.exports = Anni => {
     },
     prefixed: function (str, prefix) {
       if (!prefix || str.length < prefix.length) return 0
+      
+      str = str.toLowerCase() 
+      prefix = prefix.toLowerCase()
+
       let prefixed = str.indexOf(prefix) === 0
       return prefixed ? prefix : 0
     },
