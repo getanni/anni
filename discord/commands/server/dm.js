@@ -19,5 +19,6 @@ module.exports = {
 
   fire: async function (Anni, Msg) {
     Anni.Reply(Msg, this.info).dm()
+    Anni.Commands.clear(Msg)
   }
 }
