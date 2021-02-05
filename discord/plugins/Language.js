@@ -39,7 +39,7 @@ module.exports = Anni => {
       '~/':      (Msg) => Anni.user ? Msg.prefix : 'anni.',
       // guild information
       '{guild.id}':    (Msg) => Msg.auth ? Msg.auth.id : '',
-      '{guild.name}':  (Msg) => Msg.auth ? Msg.auth.name : '',
+      '{guild.name}':  (Msg) => Msg.auth ? Msg.auth.name : 'Server',
       '{guild.count}': (Msg) => Msg.auth ? Msg.auth.memberCount : '',
       '{guild.owner}': (Msg) => Msg.auth ? `<@${Msg.auth.ownerID}>` : '',
       // author information
