@@ -1,8 +1,9 @@
 <template> 
-  <v-expansion-panel :class="[ 'config-item', style ]">
-    <v-expansion-panel-header :class="{ anni: true }">
+  <v-expansion-panel :class="[ 'item', state ]">
+    <v-expansion-panel-header class="name">
       <slot name="name"></slot>
     </v-expansion-panel-header>
+    
     <v-expansion-panel-content>
       <v-row v-if="$slots.opts">
         <slot name="opts"></slot>
@@ -10,7 +11,7 @@
 
       <slot name="text"></slot>
 
-      <div class="item-fabs">
+      <div class="box-fabs">
         <!-- Wipe Buttom -->
         <v-dialog persistent v-model="wipe" max-width="300">
           <template v-slot:activator="{ on, attrs }">
@@ -57,22 +58,22 @@
 
 <script>
   export default { 
-    name: 'ConfigItem',
+    name: 'BoxItem',
     props: { 
       edit: Boolean, 
       open: Object, 
       item: Object,
       base: Object,
-      diff: Array
+      save: Array
     },
     data() { return { wipe: false } },
     computed: { 
       wiped() { return this.item ? this.item.name : '' },
       shown() { return this.item && this.open && this.item.name == this.open.name },
-      style() { return { diff: this.edits && this.shown, mark: this.edits } },
+      state() { return { save: this.edits && this.shown, mark: this.edits } },
       edits() { 
         if (!this.item || !this.base) return false
-        for (let key of this.diff) {
+        for (let key of this.save) {
           if (key == 'list') {
             let arr1 = JSON.stringify(this.item[key])
             let arr2 = JSON.stringify(this.base[key])
@@ -93,12 +94,12 @@
 </script>
 
 <style scoped>
-  .diff { margin-bottom: 0; }
-  .mark .anni { color: #6666f7; }
-  .v-item--active { margin-bottom: 30px }
-  .config-item .anni { 
+  .name { 
+    color: #555;
     font-weight: 500;
-    font-size: 1.2em;
+    font-size: 1.1em;
     padding: 18px 20px;
   }
+
+  .mark .name { color: #6666f7; }
 </style>

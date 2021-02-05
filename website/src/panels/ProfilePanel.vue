@@ -1,36 +1,27 @@
 <template>
-  <div class="panel">
-    <config-wrap
-      title="Your Profile"
-      :diff="diffProfile"
+  <v-row v-masonry @click="refresh">
+    <box-card
+      name="Your Profile"
+      :save="diffProfile"
       @save="saveProfile"
       @undo="undoProfile">
       <template v-slot:help>
         <p>Age will only show on your profile if you set the year. To hide your age, leave it set to the current year.</p>
         <p>Setting your timezone will display your local time on your profile, and in the <strong>.time</strong> command.</p>
       </template>
-      <template v-slot:opts>
-        <v-col cols="12" sm="6">
-          <config-date label="Birthday" :year="age" v-model="getBirthday">
-          </config-date>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <v-select dense outlined v-model="zone" :items="$zones"
-           label="Timezone" append-icon="mdi-clock">
-          </v-select>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <v-checkbox v-model="age" label="Show Age On Profile?"/>
-        </v-col>
-        <v-col cols="12" sm="6" v-if="guild && anni">
-          <v-checkbox v-model="list" :label="`Visible On ${guild.name}`" />
-        </v-col>
-      </template>
-    </config-wrap>
 
-    <config-wrap v-if="hasExtended"
-      :title="guild.name + ' Profile'"
-      :diff="diffOptions"
+      <box-date label="Birthday" :year="age" v-model="getBirthday" />
+
+      <v-select dense outlined v-model="zone" :items="$zones"
+       label="Timezone" append-icon="mdi-clock">
+      </v-select>
+
+      <v-checkbox v-model="age" label="Show Age On Profile?" />
+    </box-card>
+
+    <box-card v-if="hasExtended"
+      :name="guild.name + ' Profile'"
+      :save="diffOptions"
       @save="saveOptions"
       @undo="undoOptions">
       <template v-slot:help>
@@ -38,19 +29,22 @@
         <strong>{{ guild.name }}</strong>, 
         and only visible there.
       </template>
-      <template v-slot:opts>
-        <v-col cols="12" v-for="(option, tag) in options" :key="tag">
-          <v-textarea outlined rows="1" auto-grow counter
-            v-model="option.data" :label="option.name" 
-            :rules="[ $rules.len ]" :placeholder="option.desc">
-          </v-textarea>
-        </v-col>
-      </template>
-    </config-wrap>
-  </div>
+
+      <div v-for="(option, tag) in options" :key="tag">
+        <v-textarea outlined rows="1" auto-grow counter
+          v-model="option.data" :label="option.name" 
+          :rules="[ $rules.len ]" :placeholder="option.desc">
+        </v-textarea>
+      </div>
+
+      <v-checkbox v-model="list" :label="`Visible On ${guild.name}`" />
+    </box-card>
+  </v-row>
 </template>
 
 <script>
+  import BoxDate from '@/partials/BoxDate.vue'
+
   export default { 
     name: 'ProfilePanel',
     props: [ 'user', 'guild', 'anni' ],
@@ -109,10 +103,11 @@
       currentYear() { return this.age ? this.year : '2020' },
       getBirthday:  {
         get() {
-          let year  = this.currentYear
+          this.refresh()
+          let year  = this.currentYear || '2020'
           let month = this.bday.split('/')[0]
           let day   = this.bday.split('/')[1]
-          return `${year}-${month}-${day}` 
+          return `${year}-${month}-${day}`
         },
         set(str) {
           let ymd = str.split('-')
@@ -122,6 +117,8 @@
       }
     },
     methods: {
+      refresh() { setTimeout(this.$redrawVueMasonry, 50) },
+
       loadProfile(profile, opts) {
         profile = this.$nulls(profile)
         profile.list = profile.list ? JSON.parse(profile.list) : []
@@ -159,6 +156,7 @@
         let args = [ this.user, this.guild ]
         let data = await this.$getProfile(...args)
         if (data.profile) this.loadProfile(data.profile, true)
+        this.refresh()
       },
       async saveProfile() {
         let args = [ this.user, this.guild, this.currProfile ]
@@ -175,6 +173,7 @@
         let data = await this.$setProfile(...args)
         if (data.profile) this.loadProfile(data.profile)
       }
-    }
+    },
+    components: { BoxDate }
   }
 </script>

@@ -1,9 +1,58 @@
 <template>
   <div class="panel">
-    <config-wrap :hide="hide"
-      title="New Action"
+    <box-card show
+      :name="`${guild.name} Actions`"
+      v-if="actions.length" v-model="pane">
+      <template v-slot:list>
+        <box-item 
+          v-for="(action, i) in actions" :key="i"
+          :item="action" 
+          :base="archive[i]"
+          :open="actions[pane]"
+          :save="['name', 'text', 'list']"
+          @save="saveActions"
+          @undo="undoActions"
+          @wipe="wipeActions">
+          <template v-slot:name>{{ archive[i].name }}</template>
+          <template v-slot:opts>
+            <v-col cols="12" sm="4">
+              <v-text-field dense outlined
+                prefix="anni." placeholder="hug" label="Trigger"
+                v-model="action.name" :rules="[ $rules.space, _oldName ]">
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="8">
+              <v-text-field dense outlined label="Response"
+                placeholder="*{user} hugs {msg}*" v-model="action.text">
+              </v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field dense outlined label="Image Response Link"
+                placeholder="https://i.imgur.com/r9aU2xv.gif" v-model="href"
+                :rules="[ $rules.url ]" append-outer-icon="mdi-plus-circle"
+                @click:append-outer="_addImg()">
+              </v-text-field>
+
+              Image Responses
+              <v-list flat dense subheader>
+                <v-list-item v-if="!action.list.length">Nothing Yet</v-list-item>
+                <v-list-item v-for="(url, i) in action.list" :key="i">
+                  <a :href="url" target="_blank">{{ url }}</a>
+                  <v-list-item-action @click="action.list.splice(i, 1)">
+                    <v-btn icon x0small><v-icon>mdi-delete</v-icon></v-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-list>
+            </v-col>
+          </template>
+        </box-item>
+      </template>
+    </box-card>
+
+    <box-card wide :hide="!hide"
+      name="Create A New Action"
       :edit="editCreated"
-      :diff="diffCreated"
+      :save="diffCreated"
       @save="saveCreated"
       @undo="undoCreated">
       <template v-slot:help>
@@ -41,54 +90,7 @@
           </v-list>
         </v-col>
       </template>
-    </config-wrap>
-
-    <config-list 
-      :title="`${guild.name} Actions`"
-      v-if="actions.length" v-model="pane">
-      <config-item 
-        v-for="(action, i) in actions" :key="i"
-        :item="action" 
-        :base="archive[i]"
-        :open="actions[pane]"
-        :diff="['name', 'text', 'list']"
-        @save="saveActions"
-        @undo="undoActions"
-        @wipe="wipeActions">
-        <template v-slot:name>{{ archive[i].name }}</template>
-        <template v-slot:opts>
-          <v-col cols="12" sm="4">
-            <v-text-field dense outlined
-              prefix="anni." placeholder="hug" label="Trigger"
-              v-model="action.name" :rules="[ $rules.space, _oldName ]">
-            </v-text-field>
-          </v-col>
-          <v-col cols="12" sm="8">
-            <v-text-field dense outlined label="Response"
-              placeholder="*{user} hugs {msg}*" v-model="action.text">
-            </v-text-field>
-          </v-col>
-          <v-col cols="12">
-            <v-text-field dense outlined label="Image Response Link"
-              placeholder="https://i.imgur.com/r9aU2xv.gif" v-model="href"
-              :rules="[ $rules.url ]" append-outer-icon="mdi-plus-circle"
-              @click:append-outer="_addImg()">
-            </v-text-field>
-
-            Image Responses
-            <v-list flat dense subheader>
-              <v-list-item v-if="!action.list.length">Nothing Yet</v-list-item>
-              <v-list-item v-for="(url, i) in action.list" :key="i">
-                <a :href="url" target="_blank">{{ url }}</a>
-                <v-list-item-action @click="action.list.splice(i, 1)">
-                  <v-btn icon x0small><v-icon>mdi-delete</v-icon></v-btn>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
-          </v-col>
-        </template>
-      </config-item>
-    </config-list>
+    </box-card>
   </div>
 </template>
 

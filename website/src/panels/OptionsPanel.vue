@@ -1,9 +1,44 @@
 <template>
   <div class="panel">
-    <config-wrap :hide="hide"
-      title="New Option"
+    <box-card show
+      :name="`${guild.name} Options`"
+      v-if="options.length" v-model="pane">
+      <template v-slot:list>
+        <box-item
+          v-for="(option, i) in options" :key="i"
+          :item="option"
+          :base="archive[i]"
+          :open="options[pane]"
+          :save="['tag', 'name', 'desc']"
+          @save="saveOptions"
+          @undo="undoOptions"
+          @wipe="wipeOptions">
+          <template v-slot:name>{{ archive[i].name }}</template>
+          <template v-slot:opts>
+            <v-col cols="12" sm="4">
+              <v-text-field dense outlined label="Trigger" placeholder="about"
+                v-model="option.tag" :rules="[ $rules.space, _oldTag ]">
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="8">
+              <v-text-field dense outlined label="Name" 
+                placeholder="About Me" v-model="option.name">
+              </v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field dense outlined label="Description"
+                placeholder="A quick summary of you!" v-model="option.desc">
+              </v-text-field>
+            </v-col>
+          </template>
+        </box-item>
+      </template>
+    </box-card>
+
+    <box-card wide :hide="!hide"
+      name="Create A New Option"
       :edit="editCreated"
-      :diff="diffCreated"
+      :save="diffCreated"
       @save="saveCreated"
       @undo="undoCreated">
       <template v-slot:help>
@@ -28,40 +63,7 @@
           </v-text-field>
         </v-col>
       </template>
-    </config-wrap>
-
-    <config-list 
-      :title="`${guild.name} Options`"
-      v-if="options.length" v-model="pane">
-      <config-item
-        v-for="(option, i) in options" :key="i"
-        :item="option"
-        :base="archive[i]"
-        :open="options[pane]"
-        :diff="['tag', 'name', 'desc']"
-        @save="saveOptions"
-        @undo="undoOptions"
-        @wipe="wipeOptions">
-        <template v-slot:name>{{ archive[i].name }}</template>
-        <template v-slot:opts>
-          <v-col cols="12" sm="4">
-            <v-text-field dense outlined label="Trigger" placeholder="about"
-              v-model="option.tag" :rules="[ $rules.space, _oldTag ]">
-            </v-text-field>
-          </v-col>
-          <v-col cols="12" sm="8">
-            <v-text-field dense outlined label="Name" 
-              placeholder="About Me" v-model="option.name">
-            </v-text-field>
-          </v-col>
-          <v-col cols="12">
-            <v-text-field dense outlined label="Description"
-              placeholder="A quick summary of you!" v-model="option.desc">
-            </v-text-field>
-          </v-col>
-        </template>
-      </config-item>
-    </config-list>
+    </box-card>
   </div>
 </template>
 

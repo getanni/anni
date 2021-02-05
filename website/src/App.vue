@@ -1,96 +1,136 @@
 <template>
-  <v-app>
-    <nav-drawer :open="open" @input="toggle" />
-    <nav-topbar @open="open = !open" />
+  <v-app id="anni" :class="{ mobile }">
 
-    <v-main id="anni" :class="{ mobile: $vuetify.breakpoint.xs }">
-      <router-view />
+    <v-app-bar id="head" app clipped-left elevate-on-scroll>
+      <v-app-bar-nav-icon @click="open = !open" />
+      
+      <router-link to="/">
+        <img src="@/assets/icon.png" alt="anni" id="logo">
+      </router-link>
+
+      <div v-if="!$vuetify.breakpoint.xs">
+        <v-btn text to="/docs">Docs</v-btn>
+        <v-btn text to="/dash">Dash</v-btn>
+      </div>
+
+      <v-spacer />
+      
+      <!-- Vote Menu -->
+      <v-menu offset-y>
+        <template v-slot:activator="{ on: menu, attrs }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on: tooltip }">
+              <v-btn icon v-bind="attrs" v-on="{ ...tooltip, ...menu }">
+                <v-icon color="red">mdi-heart</v-icon>
+              </v-btn>
+            </template>
+            <span>Vote 4 Anni</span>
+          </v-tooltip>
+        </template>
+        <v-list subheader>
+          <v-subheader class="vote">Vote For Anni</v-subheader>
+          <v-list-item :href="$urlVotes1" target="_blank">
+            <v-list-item-title class="vote red--text">
+              Anni on Top.gg
+            </v-list-item-title>
+          </v-list-item>
+          <!-- <v-list-item :href="$urlVotes2" target="_blank">
+            <v-list-item-title>BotsForDiscord</v-list-item-title>
+          </v-list-item> -->
+        </v-list>
+      </v-menu>
+
+      <!-- Invite Button -->
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on" icon :href="$urlInvite" target="_blank">
+            <v-icon color="primary">mdi-plus-circle</v-icon>
+          </v-btn>
+        </template>
+        <span>Invite Anni</span>
+      </v-tooltip>
+    </v-app-bar>
+
+    <v-navigation-drawer id="side" clipped app 
+      temporary :value="open" @input="open = $event">
+      
+      <side-nav />
+    </v-navigation-drawer>
+
+    <v-main class="grey lighten-4">
+      <v-container fluid id="wrap">
+        <router-view></router-view>
+
+        <footer class="grey--text">
+          Found A Bug? Got A Suggestion? Mention it in the 
+          <a :href="$urlServer" class="grey--text" target="_blank">
+            <strong>Support Server.</strong>
+          </a>
+        </footer>
+      </v-container>
     </v-main>
 
   </v-app>
 </template>
 
 <script>
-  import NavTopbar from '@/partials/NavTopbar.vue'
-  import NavDrawer from '@/partials/NavDrawer.vue'
+  import SideNav from '@/partials/SideNav.vue'
 
-  export default { 
+  export default {
     data() { return { open: false } },
     methods: { toggle(open) { this.open = open } },
-    components: { NavTopbar, NavDrawer }
+    computed: { 
+      mobile() { return this.$vuetify.breakpoint.smAndDown },
+    },
+    components: { SideNav }
   }
 </script>
 
 <style>
-  #anni { padding: 64px 0!important; }
-  #home { height: 25px; margin: 0 30px 0 0; }
-  .anni, .v-btn.anni { color: #6666f7; }
-  h3 {
-    color: #888;
-    font-size: 1rem;
-    letter-spacing: .0125em;
-    margin: 30px 0 10px 19px;
+  #wrap { padding: 0 20px; }
+  #logo { height: 30px; margin: 7px 10px 0; }
+
+  #anni .vote {
+    font-size: 0.8em;
+    font-weight: 900;
     text-transform: uppercase;
   }
-  
+
   #anni:not(.mobile) #sidebar {
-    position: fixed;
+    padding: 0 0 0 10px;
+    position: fixed; width: 150px; 
     top: 64px; left: 0; bottom: 0;
-    width: 200px; padding-top: 10px;
   }
-  #anni:not(.mobile) #content { padding-left: 200px; }
-  #anni.mobile #content { padding: 50px 0; }
+  #anni:not(.mobile) #content { 
+    min-height: 230px;
+    padding-left: 150px; 
+  }
 
-  #sidebar .v-subheader { margin: 5px 0; }
-  #sidebar .v-subheader,
-  #sidebar .v-tab { height: 30px; }
-  #sidebar .v-tab {
+  #anni .v-tabs-items,
+  #anni .v-tabs > .v-tabs-bar { background: transparent; }
+  #anni .v-tabs .v-tab { 
     padding-left: 25px;
+  }
+  #anni .v-tabs .v-subheader { margin-top: 10px; }
+  #anni .v-window-item .row { margin-left: -10px; margin-right: -10px; }
+  #anni .v-tabs .v-tab, 
+  #anni .v-tabs .v-subheader { 
+    height: 30px;
     text-transform: none;
-    letter-spacing: 0.02em;
-    justify-content: left;
+    justify-content: start;
+    letter-spacing: initial;
+  }
+  #anni .v-tabs .v-tab strong, 
+  #anni .v-tabs .v-subheader strong { 
+    max-width: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .panel { 
-    width: 100%;
-    max-width: 600px;
-    margin-right: 20px;
-    position: relative;
-    display: inline-block; 
+  footer {
+    padding: 15px 0;
+    margin: 60px -20px 0;
+    font-size: 0.8rem;
+    text-align: center;
   }
-  .panel .v-card { 
-    position: relative;
-    margin-top: 5px !important;
-    margin-left: 5px !important;
-    margin-right: 5px !important;
-    margin-bottom: 20px !important;
-  }
-  .panel .diff {
-    border-top: 3px solid #6666f7 !important;
-    border-bottom: 3px solid #6666f7 !important;
-  }
-  .panel .edit:not(.diff) {
-    border-top: 3px solid #cd81fd !important;
-    border-bottom: 3px solid #cd81fd !important;
-  }
-  .panel .edit, .panel .diff { margin-bottom: 40px !important; }
-  .panel .v-card:not(.diff):not(:.edit) { margin-bottom: 20px !important; }
-
-  .item-fabs {
-    left: 0px;
-    right: 0px;
-    bottom: -28px;
-    height: 56px;
-    z-index: 12;
-    position: absolute;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end
-  }
-  .item-fabs .v-btn { margin-left: 10px; }
-
-  #anni kbd { color: #6666f7; border: 1px solid #6666f7; background: transparent; }
-  #anni kbd + kbd { margin-left: 10px; }
-  #anni p > kbd { margin: 5px 0!important; }
 </style>

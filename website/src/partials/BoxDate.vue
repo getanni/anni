@@ -3,7 +3,6 @@
     :close-on-content-click="false"
     :return-value.sync="day"
     transition="scale-transition"
-    :class="{ hideyear: !year }"
     min-width="290px" offset-y>
 
     <template v-slot:activator="{ on, attrs }">
@@ -27,7 +26,7 @@
 
 <script>
   export default {
-    name: 'ConfigDate',
+    name: 'BoxDate',
     props: [ 'value', 'label', 'year' ],
     data() { return { menu: false, day: '' } },
     watch: { value() { this.day = this.value } }

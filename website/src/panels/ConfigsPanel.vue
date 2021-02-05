@@ -1,8 +1,8 @@
 <template>
-  <div class="panel">
-    <config-wrap v-if="haveConfigs"
-      title="Triggers"
-      :diff="diffTrigger"
+  <v-row v-masonry @click="refresh">
+    <box-card v-if="haveConfigs"
+      name="Triggers"
+      :save="diffTrigger"
       @save="saveConfigs"
       @undo="undoTrigger">
       <template v-slot:help>
@@ -26,47 +26,12 @@
           </v-text-field>
         </v-col>
       </template>
-    </config-wrap>
-
-    <!-- Refresh -->
-    <config-wrap v-if="haveConfigs">
-      <template v-slot:text>
-        <div class="text-center">
-          Channels or roles out of date? Run <kbd>anni.refresh</kbd> in your server.
-        </div>
-      </template>
-    </config-wrap>
-
-    <!-- Birthday Settings -->
-    <config-wrap v-if="haveConfigs"
-      title="Announcements"
-      :diff="diffReminds"
-      @save="saveConfigs"
-      @undo="undoReminds">
-      <template v-slot:help>
-        <p>Users can add their birthdays to their user profiles. If they have a birthday set, you can send out a reminder 1 week before, and an announcement the day of. You just need to set a channel!</p>
-        <p>Message must contain either <kbd>{user}</kbd> or <kbd>{users}</kbd>.<br> (for <em><strong>@user</strong></em> and <em><strong>@user's</strong></em> respectively)</p>
-        <p>Can optionally include <strong>{date}</strong> for display the date of the birthday. <em>Useful for the reminder message!</em></p>
-      </template>
-      <template v-slot:opts>
-        <v-col>
-          <v-select dense outlined label="Announcement Channel"
-            :items="channels" item-text="name" item-value="id" v-model="birthday">
-          </v-select>
-          <v-textarea outlined rows="2" :rules="[ $rules.ping ]"
-            label="Reminder Message" v-model="reminder">
-          </v-textarea>
-          <v-textarea outlined rows="2" :rules="[ $rules.ping ]"
-            label="Announcement Message" v-model="announce">
-          </v-textarea>
-        </v-col>
-      </template>
-    </config-wrap>
+    </box-card>
 
     <!-- Starboard Settings -->
-    <config-wrap v-if="haveConfigs"
-      title="Starboard"
-      :diff="diffStarred"
+    <box-card v-if="haveConfigs"
+      name="Starboard"
+      :save="diffStarred"
       @save="saveConfigs"
       @undo="undoStarred">
       <template v-slot:help>
@@ -86,8 +51,39 @@
           </v-text-field>
         </v-col>
       </template>
-    </config-wrap>
-  </div>
+    </box-card>
+
+    <!-- Birthday Settings -->
+    <box-card v-if="haveConfigs"
+      name="Announcements"
+      :save="diffReminds"
+      @save="saveConfigs"
+      @undo="undoReminds">
+      <template v-slot:help>
+        <p>Users can add their birthdays to their user profiles. If they have a birthday set, you can send out a reminder 1 week before, and an announcement the day of. You just need to set a channel!</p>
+        <p>Message must contain either <kbd>{user}</kbd> or <kbd>{users}</kbd>.<br> (for <em><strong>@user</strong></em> and <em><strong>@user's</strong></em> respectively)</p>
+        <p>Can optionally include <strong>{date}</strong> for display the date of the birthday. <em>Useful for the reminder message!</em></p>
+      </template>
+
+      <v-select dense outlined label="Announcement Channel"
+        :items="channels" item-text="name" item-value="id" v-model="birthday">
+      </v-select>
+      <v-textarea outlined rows="2" :rules="[ $rules.ping ]"
+        label="Reminder Message" v-model="reminder">
+      </v-textarea>
+      <v-textarea outlined rows="2" :rules="[ $rules.ping ]"
+        label="Announcement Message" v-model="announce">
+      </v-textarea>
+    </box-card>
+
+    <!-- Refresh -->
+    <box-card v-if="haveConfigs">
+      <div class="text-center">
+        Channels or roles out of date? <br>
+        Run <strong>anni.refresh</strong> in your server.
+      </div>
+    </box-card>
+  </v-row>
 </template>
 
 <script>
@@ -137,6 +133,8 @@
       }
     },
     methods: {
+      refresh() { setTimeout(this.$redrawVueMasonry, 50) },
+
       loadConfigs(configs) {
         configs = this.$nulls(configs)
         if (configs.opts)     this.loadDetails(configs.opts)
@@ -176,6 +174,7 @@
       async renderPanel() {
         let data = await this.$getConfigs(this.guild)
         if (data.configs) this.loadConfigs(data.configs)
+        this.refresh()
       },
       async saveConfigs() {
         if (this.$rules.bad('has',   this.prefix)) return

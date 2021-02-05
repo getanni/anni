@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-import NavFloater from '@/partials/NavFloater.vue'
-import AnniChecks from '@/partials/AnniChecks.vue'
-import ConfigWrap from '@/partials/ConfigWrap.vue'
-import ConfigList from '@/partials/ConfigList.vue'
-import ConfigItem from '@/partials/ConfigItem.vue'
-import ConfigDate from '@/partials/ConfigDate.vue'
+import docs from '@/anni.json'
+import conf from '../../../configs.json'
+
+import BoxWrap from '@/partials/BoxWrap.vue'
+import BoxCard from '@/partials/BoxCard.vue'
+import BoxItem from '@/partials/BoxItem.vue'
 
 export default {
   install(Vue) {
@@ -13,17 +13,23 @@ export default {
     // add externals
     Vue.prototype.axios = axios
 
+    // add global data / variables
+    Vue.prototype.$cmdDocs   = docs.commands
+    Vue.prototype.$apiOrigin = conf.origin_api
+    Vue.prototype.$urlGoGold = conf.URLs.patreon
+    Vue.prototype.$urlGithub = conf.URLs.github
+    Vue.prototype.$urlTrello = conf.URLs.trello
+    Vue.prototype.$urlInvite = conf.URLs.invite
+    Vue.prototype.$urlServer = conf.URLs.server
+    Vue.prototype.$urlLogins = conf.URLs.login
+    Vue.prototype.$urlVotes1 = conf.URLs.vote1
+    Vue.prototype.$urlVotes2 = conf.URLs.vote2
+
     // add global components
-    Vue.component('nav-floater', NavFloater)
-    Vue.component('anni-checks', AnniChecks)
-    Vue.component('config-wrap', ConfigWrap)
-    Vue.component('config-list', ConfigList)
-    Vue.component('config-item', ConfigItem)
-    Vue.component('config-date', ConfigDate)
-
-    // global HTML helpers
-    Vue.prototype.$htmlDashLink = `You can use the <strong><a href="/dash">dashboard</a></strong> to make quicker changes.`
-
+    Vue.component('box-wrap', BoxWrap)
+    Vue.component('box-card', BoxCard)
+    Vue.component('box-item', BoxItem)
+    
     // add timezone index
     Vue.prototype.$zones = [
       { text: 'No Timezone', value: '' },
