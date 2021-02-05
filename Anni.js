@@ -7,8 +7,11 @@
 /*************************************/
 
 const Discord = require('discord.js')
+const intents = new Discord.Intents([ 
+  Discord.Intents.NON_PRIVILEGED, 'GUILD_MEMBERS'
+])
 
-const Anni = new Discord.Client()
+const Anni = new Discord.Client({ ws: { intents } })
 const Load = require('./Loader.js')
 
 Anni.Wait  = require('util').promisify(setTimeout)

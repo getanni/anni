@@ -25,5 +25,9 @@ module.exports = async (Anni, Guild) => {
   let details = Anni.Bot.Details(Guild)
   await Anni.$Details.set(details)
 
+  // cache the users for DM commands
+  let members = await Guild.members.fetch()
+  for (let user of members) Anni.Cache.server(user[1].user.id, Guild.id)
+
   return Anni.State(stats.join('\n'), title)
 }
