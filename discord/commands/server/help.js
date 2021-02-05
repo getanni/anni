@@ -19,7 +19,7 @@ module.exports = {
   info: {
     head: "Anni Help (v{ver})",
     desc: [ 
-      "Hello, I'm **Anni!** I'm a profile bot! I track birthdays and timezones, combined starboard stats, and per-server profile fields! [Check out my website for all of my features!]({website})"
+      "Hello, I'm **Anni** - a profile bot! I track birthdays and timezones, combined starboard stats, and per-server profile fields! [Check out my website for all of my features!]({website})"
     ],
     grid: [
       { text: "**Quick Overview**"  },

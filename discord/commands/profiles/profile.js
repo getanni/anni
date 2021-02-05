@@ -39,7 +39,7 @@ module.exports = {
     if (user && !auth) return Anni.Reply(Msg, this.lang.noDMs).send()
 
     // either find the user or get the author, return if nothing
-    let target = await Anni.Bot.User(Msg, user || Msg.author.username)
+    let target = user ? Anni.Bot.User(Msg, user) : { user: Msg.author }
     if (!target) return Anni.Reply(Msg, this.lang.user404).clean()
     let profile = await Anni.$Profile.get(target.user.id, auth)
     let allowed = Anni.Profile.show(profile, auth)
