@@ -53,6 +53,7 @@ module.exports = Anni => {
     },
 
     show: (profile, guild) => {
+      if (!guild) return true // for DMs?
       let list = JSON.parse(profile.list)
       return list.includes ? list.includes(guild) : false
     }

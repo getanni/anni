@@ -13,7 +13,9 @@ module.exports = Anni => {
       if (!Msg.flag && !Msg.args.length) return false
       let argcopy = [ ...Msg.args ]
       let trigger = Msg.flag || argcopy.shift().toLowerCase()
-      let Command = this.Get(Anni, Msg, `${parent}-${trigger}`)
+      let Command = this.find(`${parent}-${trigger}`)
+      let allowed = this.can(Msg, Command)
+      if (Command && !allowed) return { error: true }
       if (Command && !Msg.flag) Msg.args.shift()
       return Command
     },
