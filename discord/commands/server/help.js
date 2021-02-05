@@ -4,7 +4,6 @@ module.exports = {
   name: 'help',
   also: ['invite', 'support'],
   gate: 0,
-  auth: true,
 
   help: {
     head: "~/help (command)",
@@ -20,7 +19,7 @@ module.exports = {
   info: {
     head: "Anni Help (v{ver})",
     desc: [ 
-      "Hello, I'm *Anniversaire*, but you can call me **Anni!** I'm a profile bot! I keep track of birthdays, timezones, and more! I do birthday announcements, and reminders a week before! [Check out my website for all of my features!]({website})"
+      "Hello, I'm **Anni!** I'm a profile bot! I track birthdays and timezones, combined starboard stats, and per-server profile fields! [Check out my website for all of my features!]({website})"
     ],
     grid: [
       { text: "**Quick Overview**"  },
@@ -29,8 +28,8 @@ module.exports = {
       { name: "`~/profile`", text: "View your profile.", col: 1 },
       { name: "`~/p setup`", text: "Update your profile.", col: 1 },
       { name: "`~/birthdays`", text: "{guild.name} birthdays.", col: 1 },
-      { name: "`~/times`", text: "Times in {guild.name}.{nl}", col: 1 },
-      { name: "For More:", text: "[Invite Link]({invite}) - [Website Help]({website}) - Report any bugs to @tech in the [Support Server]({server})" }
+      { name: "`~/times`", text: "{guild.name} times.{nl}", col: 1 },
+      { name: "For More:", text: "[Invite Link]({invite}) - [Website Help]({website}) - [Support Server]({server})" }
     ]
   },
 
