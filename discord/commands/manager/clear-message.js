@@ -39,7 +39,7 @@ module.exports = {
     let bulk = await Msg.channel.bulkDelete(batch, true)
     let done = bulk.size, total = batch.size, data = { done, total }
 
-    if (done < total) return Anni.Reply(Msg, this.lang.old, data).flash()
+    if (done < total) return Anni.Reply(Msg, this.lang.parts, data).flash()
 
     return Anni.Reply(Msg, this.lang.clear, data).flash()
   },
