@@ -25,23 +25,27 @@ module.exports = {
 
   fire: async function (Anni, Msg) {
     let list = await Anni.$Profile.all(Msg.auth.id)
-    let data = {}, time = Msg.args.join(' ')
+    let data = {}, temp = Msg.args.join(' ')
 
     let profile = await Anni.$Profile.get(Msg.author.id)
     if (!profile.zone) return Anni.Reply(Msg, this.lang.zone).clean()
 
-    if (time) time = Anni.Time.check(time, profile.zone)
+    // check if we're looking up a user or a time
+    let user = await Anni.Bot.User(Msg, temp)
+    let time = Anni.Time.check(temp, profile.zone)
+
     let name = profile.zone.split('/')[1]
     let post = { head: time ? this.lang.when : this.lang.curr, desc: [] }
 
-    for (let user of list) {
-      if (user.zone) {
-        let curr = data[user.zone]
-        let when = Anni.Time.time(user.zone, time)
-        let ping = Msg.author.id == user.user ? user.user : false
+    for (let item of list) {
+      if (item.zone) {
+        let curr = data[item.zone]
+        let when = Anni.Time.time(item.zone, time)
+        let ping = Msg.author.id == item.user ? item.user : false
+        if (user) ping = user.id == item.user ? item.user : false
 
         if (curr) curr = { ...curr, ping, count: curr.count + 1 }
-        else data[user.zone] = { ...when, ping, count: 1 }
+        else data[item.zone] = { ...when, ping, count: 1 }
       }
     }
 
