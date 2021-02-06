@@ -7,43 +7,30 @@ module.exports = {
 
   help: {
     head: "~/setup",
-    desc: [
-      "Returns info for setting up the server config.",
-      "",
-      "{{ ~/setup }}"
-    ]
+    desc: [ "Returns info for setting up the server config." ]
   },
 
   info: {
-    head: "Anni Setup",
+    head: "Anni Setup Menu - v{ver}",
     desc: [
-      "**Want to set up a starboard?** Try `~/starboard`",
-      "Get started with **custom profile options** with `~/help options`",
-      "",
-      "*General Settings Below*"
+      "`~/setup birthdays` - Birthday Announcements & Reminders",
+      "`~/setup starboard` - Channel, Reaction Amount, and Emoji",
+      "`~/setup profiles ` - Server-Specific User Profile Options", "{_}"
     ],
     grid: [
       {
-        name: "Set Your Birthday Channel *Required*",
-        text: "Use `~/channel` to set your *birthday channel*. Without setting a channel, reminders and announcements will not fire. {{ ~/channel #general-chat }}{_}"
-      },
-      {
-        name: "Change Reminder Message *Optional*",
-        text: "Use `~/reminder` to change the birthday reminder message. You can pass 'off' to disable the reminder. This is the message that will fire in your *birthday channel* one week before the user's birthday. {{ ~/reminder Hey, {/users} birthday is in a week! }}{_}"
-      },
-      {
-        name: "Change Announcement Message *Optional*",
-        text: "Use `~/announce` to change the birthday announcement message. You can pass 'off' to disable the announcement. This is the message that will fire in your *birthday channel* on the day of the user's birthday. {{ ~/announce Happy Birthday {/user}! }}{_}"
-      },
-      {
-        name: "Change Server Prefix *Optional*",
-        text: "Use `~/prefix` to change the server prefix. By default, this is `anni.`, hence `anni.help` or `anni.commands`. Some bots use `!` or `^`, but be sure to pick something unique in your server to separate Anni from other bots. Some popular options are `a.`, `a^`, or `a!` {{ ~/prefix ?? }}"
-      },
-      { text: "*You can respond to this DM with the above commands.*" }
-    ]
+        name: "Changing Your Server Prefix",
+        text: "{{ ~/prefix a! }}{_}"
+      }
+    ],
+    foot: "You can respond to this DM with the above commands."
   },
 
   fire: async function (Anni, Msg) {
+    // fire our subcommand if any, or return for misfire
+    let sub = Anni.Commands.Sub(Anni, Msg, this.name)
+    if (sub) return sub.fire ? sub.fire(Anni, Msg) : false
+      
     return Anni.Reply(Msg, this.info).dm()
   },
 
