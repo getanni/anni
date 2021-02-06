@@ -3,7 +3,6 @@
 module.exports = {
   name: 'dm',
   gate: 0,
-  auth: true,
 
   help: {
     head: "~/dm",
@@ -12,13 +11,25 @@ module.exports = {
     ]
   },
 
+  lang: {
+    curr: "Commands executing via {name}.",
+    none: "No server selected. Run `anni.dm` in desired server."
+  },
+
   info: {
     title: "Hello From {guild.name}!",
     description: "Any commands used in this DM will execute via {guild.name}"
   },
 
   fire: async function (Anni, Msg) {
-    Anni.Reply(Msg, this.info).dm()
-    Anni.Commands.clear(Msg)
+    if (!Msg.guild) {
+      let data = Anni.Cache.server(Msg.author.id)
+      let name = data ? data.name : false
+      let auth = name ? this.lang.curr : this.lang.none
+      return Anni.Reply(Msg, auth, { name }).send()
+    } else {
+      Anni.Reply(Msg, this.info).dm()
+      Anni.Commands.clear(Msg)
+    }
   }
 }

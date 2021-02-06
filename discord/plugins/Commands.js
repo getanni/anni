@@ -38,12 +38,11 @@ module.exports = Anni => {
     can: function (Msg, Command) {
       if (!Msg || !Command) return false
 
-      let auth = Command.gate > 4 ? 'admin' : 'user'
       let tags = `[Err: Tags: ${Msg.tags.length}/${Command.tags || 0}]`
       let args = `[Err: Args: ${Msg.args.length}/${Command.args || 0}]`
       let gate = `[Err: Gate: ${Msg.perm.level}/${Command.gate}]`
 
-      if (Command.auth && !Msg.auth)             Msg.err = auth
+      if (Command.auth && !Msg.auth)             Msg.err = 'auth'
       if (Command.nodm && !Msg.guild)            Msg.err = 'dm'
       if (Command.gate > Msg.perm.level)         Msg.err = gate
       if ((Command.tags || 0) > Msg.tags.length) Msg.err = tags
@@ -125,9 +124,8 @@ module.exports = Anni => {
     },
 
     $lang: {
-      dm:   "Sorry this command won't work in DMs.",
-      user: "You need to run ~/p.setup in a server first.",
-      admin: "You need to run `~/setup` in your server first.",
+      dm:    "Sorry this command won't work in DMs.",
+      auth:  "You need to run `anni.dm` in a server first.",
       where: "*Command via {guild.name}*"
     }
   }
