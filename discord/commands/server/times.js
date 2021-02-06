@@ -36,9 +36,12 @@ module.exports = {
 
     for (let user of list) {
       if (user.zone) {
+        let curr = data[user.zone]
         let when = Anni.Time.time(user.zone, time)
-        if (data[user.zone]) data[user.zone].count += 1
-        else data[user.zone] = { ...when, count: 1 }
+        let ping = Msg.author.id == user.user ? user.user : false
+
+        if (curr) curr = { ...curr, ping, count: curr.count + 1 }
+        else data[user.zone] = { ...when, ping, count: 1 }
       }
     }
 
@@ -46,7 +49,9 @@ module.exports = {
     data = Anni.Arr.sort(data, '_offset')
 
     for (let zone of data) {
-      post.desc.push(`**${zone.time}** - ${zone.name} (${zone.count})`)
+      let str = `**${zone.time}** - ${zone.name} (${zone.count})`
+      if (zone.ping) str += ` <@${zone.ping}>`
+      post.desc.push(str)
     }
 
     return Anni.Reply(Msg, post, { name }).send()
