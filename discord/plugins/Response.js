@@ -43,8 +43,9 @@ module.exports = Anni => {
       let last = i == this.response.length - 1
       let auth = dm ? this.Msg.author : this.Msg.channel
       // return on last response
-      if (!last)  auth.send(...this.response[i])
-      else return auth.send(...this.response[i])
+      let error = () => Anni.Log(`Couldn't Send Message.`)
+      if (!last)  auth.send(...this.response[i]).catch(error)
+      else return auth.send(...this.response[i]).catch(error)
     }
   }
 
