@@ -35,7 +35,7 @@ module.exports = Model => {
   Model.Print = function (text, name, err) {
     let desc = text.stack || text
     let head = typeof name === 'string' ? name : ''
-    let post = { head, desc }, log = `${head} ${desc}`
+    let post = { head, desc }, log = head || desc
 
     if (err) post.desc = "```" + desc + "```"
     if (err) { Logger.warn(log) } else { Logger.anni(log) }
@@ -45,5 +45,5 @@ module.exports = Model => {
     if (channel)  this.Reply({ channel }, post).send()
   }
 
-  Model.Logs = async () => await logbook.read(filename, 20)
+  Model.Logs = async () => await logbook.read(filename, 30)
 }
