@@ -22,18 +22,18 @@ module.exports = Anni => {
     return this.reply(true) 
   }
 
-  Anni.Response.prototype.flash = async function () {
+  Anni.Response.prototype.flash = async function (long) {
     let flashed = await this.reply()
     if (this.Msg.guild && !this.Msg.tests) {
-      await Anni.Wait(5000)
+      await Anni.Wait(long ? 10000 : 5000)
       if (flashed && !flashed.deleted) flashed.delete()
     }
   }
 
-  Anni.Response.prototype.clean = async function (force) {
-    if (this.Msg.guild && (!this.Msg.tests || force)) {
+  Anni.Response.prototype.clean = async function (long) {
+    if (this.Msg.guild && !this.Msg.tests) {
       Anni.Commands.clear(this.Msg)
-      return this.flash()
+      return this.flash(long)
     } else return this.reply()
   }
   

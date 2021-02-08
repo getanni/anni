@@ -12,6 +12,6 @@ module.exports = {
 
   fire: async function (Anni, Msg) {
     let logs = await Anni.Logs()
-    return Anni.Reply(Msg, `{{ ${logs} }}`).clean()
+    return Anni.Reply(Msg, `{{ ${logs} }}`).clean(true)
   }
 }
