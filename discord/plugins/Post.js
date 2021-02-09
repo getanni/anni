@@ -10,22 +10,20 @@ module.exports = Anni => {
     Build: function (Msg, data, values) {
       // define parser helper to minimize text
       let parse = (str) => Anni.Lang.Parse(Msg, str, values)
-      // quick helper to join arrays with new lines
-      let joins = (arr) => Array.isArray(arr) ? arr.join('\n') : arr
       // extract text
       let text = data.text ? parse(data.text) : false;
       if (text) delete data.text
       // define our base embed
       let embed = { author: {}, fields: [], color: Msg.color || '0xD18FE8' }
       // join description arrays with new line
-      data.desc = joins(data.desc)
+      if (Array.isArray(data.desc)) data.desc = data.desc.join('\n')
       // add other properties
       for (let prop in data) {
         let val = data[prop]
         if (prop == 'grid') {
           for (let grid of val) {
             let name   = parse(grid.name || '\u200b')
-            let value  = parse(joins(grid.text) || '\u200b')
+            let value  = parse(grid.text || '\u200b')
             let inline = parse(grid.col ? true : false)
             embed.fields.push({ name, value, inline })
           }
