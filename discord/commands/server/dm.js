@@ -28,7 +28,7 @@ module.exports = {
       let auth = name ? this.lang.curr : this.lang.none
       return Anni.Reply(Msg, auth, { name }).send()
     } else {
-      Anni.Reply(Msg, this.info).dm()
+      await Anni.Reply(Msg, this.info).dm()
       Anni.Commands.clear(Msg)
     }
   }
