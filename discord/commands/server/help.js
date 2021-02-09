@@ -17,19 +17,23 @@ module.exports = {
   },
 
   info: {
-    head: "Anni Help (v{ver})",
+    head: "Anni Help - v{ver}",
     desc: [ 
       "Hello, I'm **Anni** - a profile bot! I track birthdays and timezones, combined starboard stats, and per-server profile fields! [Check out my website for all of my features!]({website})"
     ],
     grid: [
-      { text: "**Quick Overview**"  },
-      { name: "`~/commands`", text: "Available commands." , col: 1 },
-      { name: "`~/help command`", text: "Helps with **command**.", col: 1 },
-      { name: "`~/profile`", text: "View your profile.", col: 1 },
-      { name: "`~/p setup`", text: "Update your profile.", col: 1 },
-      { name: "`~/birthdays`", text: "{guild.name} birthdays.", col: 1 },
-      { name: "`~/times`", text: "{guild.name} times.{nl}", col: 1 },
-      { name: "For More:", text: "[Invite Link]({invite}) - [Website Help]({website}) - [Support Server]({server})" }
+      { text: "**Quick Overview**" },
+      { name: "~/setup", text: "Configure your server.", col: 1 },
+      { name: "~/commands", text: "Available commands." , col: 1 },
+      { name: "~/help command", text: "Helps with **command**.", col: 1 },
+      { name: "~/me", text: "View your short profile.", col: 1 },
+      { name: "~/profile", text: "View your guild profile.", col: 1 },
+      { name: "~/p setup", text: "Update your profile.", col: 1 },
+      { name: "~/birthdays", text: "All {guild.name} birthdays.", col: 1 },
+      { name: "~/times", text: "All {guild.name} times.", col: 1 },
+      { name: "~/actions", text: "All {guild.name} actions.", col: 1 },
+      { text: "`dm` - Use this command in a server to associate DM commands with that server. Use in a DM to check which server you're commanding." },
+      { text: "**For More:** [Invite Link]({invite}) - [Website Help]({website}) - [Support Server]({server})" }
     ]
   },
 
