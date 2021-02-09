@@ -20,12 +20,15 @@ module.exports = {
   lang: {
     curr: "Current Time in {guild.name}",
     when: "Time in {guild.name} @ {opts} in {name}",
+    none: "{guild.name} has no users with timezones set yet! `~/p setup`",
     zone: "You need to set your timezone before you can look up times!"
   },
 
   fire: async function (Anni, Msg) {
     let list = await Anni.$Profile.all(Msg.auth.id)
     let data = {}, temp = Msg.args.join(' ')
+
+    if (!list || !list.length) return Anni.Reply(Msg, this.lang.none).flash()
 
     let profile = await Anni.$Profile.get(Msg.author.id)
     if (!profile.zone) return Anni.Reply(Msg, this.lang.zone).clean()
