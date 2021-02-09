@@ -41,6 +41,7 @@ module.exports = Model => {
     if (err) { Logger.warn(log) } else { Logger.anni(log) }
     if (!this.ready) return
 
+    if (err) post.text = `<@${this.bot.owners[0]}>`
     let channel = this.channels.cache.get(this.bot.logs)
     if (channel)  this.Reply({ channel }, post).send()
   }
