@@ -10,28 +10,45 @@ module.exports = {
     desc: [ "Lists the commands you have access to." ]
   },
 
+  post: {
+    head: "Anni Command ({perm})",
+    desc: [ 
+      "Below is a list of all the commands you have access to.",
+      "Commands marked with (*) are only available in a server."
+    ],
+    grid: []
+  },
+
   lang: {
-    title: "Anni Commands ({perm})",
-    help: "**Prefix:** `~/` - Use `~/help command` for more info."
+    footer: "Use `~/help command` for more info.",
+    prefix: "**{guild.name} Prefix:** `{prefix}`",
+    authed: "Use `dm` in a server to access commands from that server."
   },
 
   fire: async function (Anni, Msg) {
-    let cats = {}, list = Anni.Commands.all(Msg)
-    let post = { head: this.lang.title, grid: [] }
-    let perm = Msg.perm.name
+    let post = Anni.$Copy(this.post)
+    let cats = {}, perm = Msg.perm.name
 
     // sort commands by categories
+    let list = Anni.Commands.all(Msg)
     let cmds = Anni.Arr.sort(list)
     for (let cmd of cmds) {
-      cats[cmd.access] = cats[cmd.access] || ``
-      cats[cmd.access] += `${cmd.name}\n`
+      cats[cmd.access] = cats[cmd.access] || ''
+      cats[cmd.access] += `${cmd.name}${cmd.nodm ? '*' : ''}\n`
     }
 
-    for (let name in cats) post.grid.push({ name, text: cats[name], col: 1 })
-    post.grid.push({ text: this.lang.help })
+    for (let name in cats) {
+      post.grid.push({ name, text: cats[name], col: 1 })
+    }
 
+    let prefix = Msg.prefix
+    let footer = this.lang.footer
+    if (prefix)    footer += `\n${this.lang.prefix}`
+    if (!Msg.auth) footer += `\n${this.lang.authed}`
 
-    return Anni.Reply(Msg, post, { perm }).dm(true)
+    post.grid.push({ text: footer })
+
+    return Anni.Reply(Msg, post, { perm, prefix }).dm(true)
   },
 
   test: async function (Anni, Msg, Test) {

@@ -28,9 +28,8 @@ module.exports = Anni => {
     all: function (Msg) {
       let list = []; for (let name in Anni.Command) {
         let Command = Anni.Command[name]
-        let checkDM = Msg.guild || !Command.nodm
         let allowed = Command.gate <= Msg.perm.level
-        let visible = allowed && checkDM && !Command.hide
+        let visible = allowed && !Command.hide
         let  access = Anni.Access.badge(Command.gate).name
         if (visible)  list.push({ ...Command, access })
       } return list;
