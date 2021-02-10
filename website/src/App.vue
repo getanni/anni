@@ -5,7 +5,7 @@
       <v-app-bar-nav-icon @click="open = !open" />
       
       <router-link to="/">
-        <img src="@/assets/icon.png" alt="anni" id="logo">
+        <img src="/icon.png" alt="anni" id="logo">
       </router-link>
 
       <div v-if="!$vuetify.breakpoint.xs">

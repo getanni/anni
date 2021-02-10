@@ -10,7 +10,7 @@
         </v-list-item-content>
 
         <v-list-item-avatar tile size="70" class="mb-0">
-          <v-img :src="require('@/assets/icon.png')" />
+          <v-img src="/icon.png" />
         </v-list-item-avatar>
       </v-list-item>
 

@@ -12,7 +12,7 @@
         </v-col>
         <v-col cols="12" md="6" align-self="center" 
           v-if="$vuetify.breakpoint.mdAndUp">
-          <img src="@/assets/icon.png" class="avatar">
+          <img src="/icon.png" class="avatar">
         </v-col>
       </v-row>
 

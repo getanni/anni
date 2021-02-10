@@ -6,7 +6,7 @@
         <v-list-item-subtitle>The Profile Bot</v-list-item-subtitle>
       </v-list-item-content>
       <v-list-item-avatar>
-        <img src="@/assets/icon.png" id="avatar">
+        <img src="/icon.png" id="avatar">
       </v-list-item-avatar>
     </v-list-item>
 
