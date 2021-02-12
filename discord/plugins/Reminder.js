@@ -3,6 +3,7 @@
 module.exports = Anni => {
   Anni.Reminders = {
     check: async function () {
+      Anni.Log(`Checking Reminders...`)
       let date = Anni.Time.curr(), data = await Anni.$Records.get()
       if (data.ran == date.day || parseInt(date.hours) < 4) return
 
@@ -10,6 +11,8 @@ module.exports = Anni => {
       let announce = await Anni.$Profile.bday(date.curr)
       if (reminder) await this.fire(reminder, date.next, 'reminder')
       if (announce) await this.fire(announce, date.curr, 'announce')
+      Anni.Log(`Fired ${reminder.length || 0} Reminders.`)
+      Anni.Log(`Fired ${announce.length || 0} Announcements.`)
 
       await Anni.$Records.set({ ran: date.day })
     },
