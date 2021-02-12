@@ -1,17 +1,16 @@
-// profile-birthday.js - for setting a user's birthday
+// set-birthday.js - for setting a user's birthday
 
 module.exports = {
-  name: 'birthday',
-  also: ['bday'],
-  gate: 1,
+  name: "birthday",
+  also: [ "bday" ],
   args: 1,
+  gate: 1,
 
   help: {
     head: "~/birthday [MM/DD][/YYYY]",
     desc: [
       "Set your birthday on your profile.",
-      "Year is optional, providing it will also display your age.",
-      "",
+      "Year is optional, providing it will also display your age.", "",
       "{{ ~/birthday 03/27 }}",
       "{{ ~/birthday 10/16/2000 }}"
     ]

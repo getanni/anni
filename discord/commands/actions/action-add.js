@@ -1,14 +1,14 @@
 // action-add.js - For adding an image to an action
 
 module.exports = {
-  name: 'action-add',
-  gate: 2, 
-  args: 2,
+  name: "action-add", 
   auth: true,
   hide: true,
+  args: 2,
+  gate: 2,
 
   help: {
-    head: "~/action.add [command] [url]",
+    head: "~/ac.add [command] [url]",
     desc: [
       "Adds an image/gif response to your action.",
       "`~/help action` for more information.",

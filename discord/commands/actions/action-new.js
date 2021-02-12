@@ -1,14 +1,14 @@
 // action-new.js - creating a new server action
 
 module.exports = {
-  name: 'action-new',
-  gate: 2,
-  args: 2,
+  name: "action-new",
   auth: true,
   hide: true,
+  args: 2,
+  gate: 2,
 
   help: {
-    head: "~/action.new [command] [response]",
+    head: "~/ac.new [command] [response]",
     desc: [
       "Makes a new action on your server.",
       "`~/help action` for more information.",

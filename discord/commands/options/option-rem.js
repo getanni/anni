@@ -1,21 +1,19 @@
 // option-rem.js - removes a server profile option
 
 module.exports = {
-  name: 'option-rem',
-  gate: 5,
-  args: 1,
+  name: "option-rem",
   auth: true,
   hide: true,
+  args: 1,
+  gate: 5,
 
   help: {
-    head: "~/option.rem [tag]",
+    head: "~/opt.rem [tag]",
     desc: [
       "Removes option with tag `tag`.",
-      "Get tags by listing options with `~/opts`",
-      "",
+      "Get tags by listing options with `~/opts`", "",
       "**WARNING**",
-      "Removing an option will also remove all user profile data associated with that option.",
-      "",
+      "Removing an option will also remove all user profile data associated with that option.", "",
       "{{ ~/opt.rem tag }}"
     ]
   },

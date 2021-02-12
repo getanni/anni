@@ -1,19 +1,18 @@
 // option.js - for profile option commands
 
 module.exports = {
-  name: 'option',
-  also: ['opt', 'options', 'opts'],
-  gate: 5,
+  name: "option",
+  also: [ "opt", "options", "opts" ],
   auth: true,
+  gate: 5,
 
   help: {
-    head: "~/option.[action] [options]",
+    head: "~/opt.[action] [options]",
     desc: [
-      "Manages guild profile options. Returns current profile options if no action provided. Be sure to check out the [dashboard]({website}/dashboard) for easier option management.",
-      "",
-      "`~/option.new` to create a new option.",
-      "`~/option.set` to edit a current option.",
-      "`~/option.rem` to delete a profile option."
+      "Manages guild profile options. Returns current profile options if no action provided. Be sure to check out the [dashboard]({website}/dashboard) for easier option management.", "",
+      "`~/opt.new` to create a new option.",
+      "`~/opt.set` to edit a current option.",
+      "`~/opt.rem` to delete a profile option."
     ]
   },
 

@@ -1,14 +1,14 @@
 // action-edit.js - editing a server action response
 
 module.exports = {
-  name: 'action-edit',
-  gate: 2,
-  args: 2,
+  name: "action-edit",
   auth: true,
   hide: true,
+  args: 2,
+  gate: 2,
 
   help: {
-    head: "~/action.edit [command] [new response]",
+    head: "~/ac.edit [command] [new response]",
     desc: [
       "Edits an action message on your server.",
       "`~/help action` for more information.",

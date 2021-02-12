@@ -1,15 +1,15 @@
 // action-remove.js - For removing an image from an action
 
 module.exports = {
-  name: 'action-remove',
-  also: [ 'action-rem' ],
-  gate: 2,
-  args: 2,
+  name: "action-remove",
+  also: [ "action-rem" ],
   auth: true,
   hide: true,
+  args: 2,
+  gate: 2,
 
   help: {
-    head: "~/action.rem [command] [url]",
+    head: "~/ac.rem [command] [url]",
     desc: [
       "Removes an image/gif response from your action.",
       "`~/help action` for more information.",

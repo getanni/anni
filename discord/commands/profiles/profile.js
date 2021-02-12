@@ -1,19 +1,17 @@
 // profile.js - list user information
 
 module.exports = {
-  name: 'profile',
-  also: [ 'p' ],
+  name: "profile",
+  also: [ "p" ],
   gate: 1,
 
   help: {
     head: "~/profile (user)",
     desc: [
       "Without `user`, returns your profile.",
-      "Otherwise, returns the profile for `user`.",
-      "",
+      "Otherwise, returns the profile for `user`.", "",
       "`~/birthday` to set your birthday.",
-      "`~/timezone` to set your timezone.",
-      "",
+      "`~/timezone` to set your timezone.", "",
       "{{ ~/profile }}",
       "{{ ~/profile @User }}",
       "{{ ~/profile setup }}"
@@ -24,7 +22,7 @@ module.exports = {
     noDMs: "Can't look up users in DMs.",
     user404: "Sorry, couldn't find that user.",
     private: "This profile is private.",
-    setup: "~/profile setup",
+    setup: "~/setup profile",
     show: "~/profile show"
   },
 

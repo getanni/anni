@@ -1,17 +1,16 @@
 // set-timezone.js - sets a timezone for a user
 
 module.exports = {
-  name: 'timezone',
-  also: ['zone'],
-  gate: 1,
+  name: "timezone",
+  also: [ "zone" ],
   args: 1,
+  gate: 1,
 
   help: {
     head: "~/timezone [timezone]",
     desc: [
       "Sets your timezone to `timezone`.",
-      "Timezone is the nearest *time city* to you. For the US, it's usually *Los Angeles*, *Denver*, *Chicago*, and *New York*. If you're unsure what to input, you can [visit this link]({timezone}) and click on yourself on the map.",
-      "",
+      "Timezone is the nearest *time city* to you. For the US, it's usually *Los Angeles*, *Denver*, *Chicago*, and *New York*. If you're unsure what to input, you can [visit this link]({timezone}) and click on yourself on the map.", "",
       "{{ ~/timezone Chicago }}",
       "{{ ~/timezone Sydney }}"
     ]

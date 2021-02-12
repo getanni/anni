@@ -1,15 +1,15 @@
 // action-delete.js - For removing an action
 
 module.exports = {
-  name: 'action-delete',
-  also: [ 'action-del' ],
-  gate: 2,
-  args: 1,
+  name: "action-delete",
+  also: [ "action-del" ],
   auth: true,
   hide: true,
+  args: 1,
+  gate: 2,
 
   help: {
-    head: "~/action.del [command]",
+    head: "~/ac.del [command]",
     desc: [
       "Removes an action from your server.",
       "`~/help action` for more information.",

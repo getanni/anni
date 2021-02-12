@@ -1,16 +1,15 @@
 // profile-show.js - make user visible on a server
 
 module.exports = {
-  name: 'profile-show',
-  gate: 1,
+  name: "profile-show",
   auth: true,
   hide: true,
+  gate: 1,
 
   help: {
     head: "~/profile show",
     desc: [
-      "Makes your profile visible on a server.",
-      "",
+      "Makes your profile visible on a server.", "",
       "{{ ~/profile show }}"
     ]
   },

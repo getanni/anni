@@ -1,16 +1,15 @@
 // profile-hide.js - make user hidden on a server
 
 module.exports = {
-  name: 'profile-hide',
-  gate: 1,
+  name: "profile-hide",
   auth: true,
   hide: true,
+  gate: 1,
 
   help: {
     head: "~/profile hide",
     desc: [
-      "Makes your profile visible on a server.",
-      "",
+      "Makes your profile visible on a server.", "",
       "{{ ~/profile hide }}"
     ]
   },

@@ -1,19 +1,18 @@
 // option-new.js - creates a new server profile option
 
 module.exports = {
-  name: 'option-new',
-  gate: 5,
-  args: 1,
-  tags: 1,
+  name: "option-new",
   auth: true,
   hide: true,
+  args: 1,
+  tags: 1,
+  gate: 5,
 
   help: {
-    head: "~/option.new  [tag] -[label] -[desc]",
+    head: "~/opt.new  [tag] -[label] -[desc]",
     desc: [
       "Sets a custom profile option for your server. Set a tag (required), add a label (required) and then optionally add a description to explain the label. Be sure to check out the [dashboard]({website}/dashboard) for easier option management.",
-      "The tag is used for setting the profile option. To use the example below, the set command would be `~/set tag [A Brief Intro]`",
-      "",
+      "The tag is used for setting the profile option. To use the example below, the set command would be `~/set tag [A Brief Intro]`", "",
       "{{ ~/opt.new tag -Tagline -A Brief Intro }}"
     ]
   },

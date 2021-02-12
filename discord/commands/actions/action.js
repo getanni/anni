@@ -1,61 +1,60 @@
-// action.js - for custom response commands
+// action.js - Lists custom actions
 
 module.exports = {
-  name: 'action',
-  also: [ 'ac', 'actions', 'rp', 'roleplay' ],
-  gate: 0,
+  name: "action",
+  also: [ "actions", "ac" ],
   auth: true,
+  gate: 0,
 
   help: {
     user: {
       head: "~/actions",
-      desc: [ "Lists the actions available in server." ]
+      desc: "Lists the actions available in the server."
     },
     mods: {
-      head: "~/action.[option] [data]",
+      head: "~/ac.[option] [data]",
       desc: [
-        "Setting up custom roleplay commands! These are unique server commands that return custom responses. For example, we'll be creating a `hug` command.",
-        "",
-        "If you include `{/msg}` when you create a new roleplay command, it will pass the message to your custom response. For example, if someone uses `~/hugs @user violently`, then the bot will respond with `@user hugs @user violently`.",
-        "",
-        "If you add more than one image/gif to a roleplay command, it will select one of the images at random for the response.",
-        "",
-        "`~/ac.new` to make a new roleplay command.",
-        "`~/ac.add` to add an image/gif to the response.",
+        "Custom actions/roleplay commands are unique server commands that return custom responses.", "",
+        "If you include `{/msg}` when you create a new action, it will pass the message to your response.", "",
+        "If you add more than one image/gif, it will select one at random.", "",
+        "`~/ac.new` to make a new action/roleplay command.",
+        "`~/ac.add` to add an image/gif to the action.",
+        "`~/ac.rem` to remove an image/gif from an action.", 
         "`~/ac.edit` to edit the text of an existing command.",
-        "`~/ac.remove` to remove an image/gif from a command.",
-        "`~/ac.delete` to delete an existing command.",
-        "",
-        "{{ ~/ac.new hugs *{/user} hugs {/msg}* }}",
-        "{{ ~/ac.add hugs https://i.imgur.com/r9aU2xv.gif }}",
-        "{{ ~/hugs }}",
-        "{{ ~/hugs @User }}"
-      ]
+        "`~/ac.delete` to delete an action."
+      ],
+      grid:[{ text: 
+        "{{ ~/ac.new hugs *{/user} hugs {/msg}* }}" +
+        "{{ ~/ac.add hugs https://i.imgur.com/r9aU2xv.gif }}" +
+        "{{ ~/hugs @user }}" +
+        "{{ ~/ac.rem hugs https://i.imgur.com/r9aU2xv.gif }}" +
+        "{{ ~/ac.edit hugs *{/user} violently hugs {/msg}* }}" +
+        "{{ ~/ac.delete hugs }}"
+      }]
     }
   },
 
   lang: {
-    title: '{guild.name} Actions',
-    empty: 'No Actions Available Yet'
+    head: "{guild.name} Actions",
+    none: "No Actions Available Yet."
   },
 
   fire: async function (Anni, Msg) {
-    // fire our sub commands or return for misfire
+    // check and fire any subcommands
     let sub = Anni.Commands.Sub(Anni, Msg, this.name)
     if (sub) return sub.fire ? sub.fire(Anni, Msg) : false
 
     // define the post, get the list of actions
-    let post = { head: this.lang.title, desc: [] }
+    let post = { head: this.lang.head, desc: [] }
     let list = await Anni.$Actions.all(Msg.auth.id)
 
-    // add actions if any, otherwise add empty message
+    // add actions or an empty message
     if (list) for (let action of list) {
       let imgs = action.list ? Anni.$list(action.list).length : 0
       let line = `**${action.name}**: \`${Anni.Escape(action.text)}\``
       if (imgs > 0) line += ` *(${imgs} Images)*`
       post.desc.push(line)
-    }
-    else if (!list || !post.desc.length) post.desc.push(this.lang.empty)
+    } else post.desc.push(this.lang.none)
 
     return Anni.Reply(Msg, post).send()
   },
