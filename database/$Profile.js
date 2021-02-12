@@ -26,11 +26,13 @@ module.exports = (Model, Types) => {
     },
 
     new: async function (user, guild) {
+      Model.Log(`Creating User Profile`)
       let profile = { user, list: guild ? `["${guild}"]` : `[]` }
       return Model.$Send(await this.table.create(profile))
     },
 
     set: async function (profile) {
+      Model.Log(`Modifying User Profile`)
       let _search = { where: { id: profile.id } }
       let updated = await this.table.update(profile, _search)
       return Model.$Send(updated ? profile : false)
@@ -42,6 +44,7 @@ module.exports = (Model, Types) => {
     },
 
     hide: async function (profile, guild) {
+      Model.Log(`Hiding User Profile`)
       profile.list = Model.$pull(profile.list, guild)
       if (!profile.list) Model.$Send(false)
       let _search = { where: { user: profile.user } }
@@ -50,6 +53,7 @@ module.exports = (Model, Types) => {
     },
 
     show: async function (profile, guild) {
+      Model.Log(`Showing User Profile`)
       profile.list = Model.$push(profile.list, guild)
       if (!profile.list) Model.$Send(false)
       let _search = { where: { user: profile.user } }
