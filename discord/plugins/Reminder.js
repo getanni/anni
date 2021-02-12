@@ -3,9 +3,9 @@
 module.exports = Anni => {
   Anni.Reminders = {
     check: async function () {
-      Anni.Log(`Checking Reminders...`)
       let date = Anni.Time.curr(), data = await Anni.$Records.get()
       if (data.ran == date.day || parseInt(date.hours) < 4) return
+      Anni.Log(`Checking Reminders...`)
 
       let reminder = await Anni.$Profile.bday(date.next)
       let announce = await Anni.$Profile.bday(date.curr)
