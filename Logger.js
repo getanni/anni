@@ -11,8 +11,8 @@ const { format, transports } = winston, { combine } = format
 
 let level = 'anni', filename = 'anni.log', time = 'HH:mm:ss'
 
-let levels = { warn: 0, info: 1, anni: 2 }
-let colors = { warn: 'red', info: 'blue', anni: 'magenta' }
+let levels = { warn: 0, info: 1, test: 2, anni: 3 }
+let colors = { warn: 'red', info: 'blue', test: 'green', anni: 'magenta' }
 let layout = log => `${log.timestamp} [${log.level}] ${log.message}`
 
 let output = [ format.timestamp({ format: time }), format.printf(layout)]
@@ -28,6 +28,8 @@ const Logger = winston.createLogger({
 
 module.exports = Model => {
   Model.Log = (text) => Logger.info(text)
+
+  Model.Tests = (text) => Logger.test(text)
 
   Model.State = (text, name) => Model.Print(text, name)
   Model.Error = (text, name) => Model.Print(text, name, true)
