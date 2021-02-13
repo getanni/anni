@@ -20,6 +20,14 @@ module.exports = Anni => {
       return Command
     },
 
+    log: function (Msg) {
+      let name = Msg.guild ? Msg.guild.name : 'DM' 
+      let exec = Msg.flag ? `${Msg.exec}.${Msg.flag}` : Msg.exec
+      if (Msg.auth) name += `:${Msg.auth.name}`
+      let send = Msg.tests ? Anni.LogTests : Anni.Log
+      return send(`<${name}> ${exec} ${Msg.err || Msg.full}`)
+    },
+
     find: function (trigger) {
       let alias = Anni.Aliased[trigger]
       return Anni.Command[trigger] || Anni.Command[alias]
@@ -58,10 +66,7 @@ module.exports = Anni => {
         if (inDMs && !isSub) Anni.Reply(Msg, this.$lang.where).dm()
       }
       // Log the command
-      let head = Msg.guild ? `<${Msg.guild.name}>` : '<DM>'
-      let name = Msg.flag ? `${Msg.exec}.${Msg.flag}` : Msg.exec
-      if (Msg.tests) head += ` (Test)`
-      Anni.Log(`${head} ${name} ${Msg.err || Msg.full}`)
+      this.log(Msg)
       return !Msg.err
     },
 
