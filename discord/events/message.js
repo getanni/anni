@@ -27,11 +27,10 @@ module.exports = async (Anni, Msg) => {
   let content = message.split(' ')
   let trigger = content.shift().toLowerCase()
 
-  // check and note any prefixes used 
-  let prefix = await Anni.Cache.prefix(guildID)
-  let suffix = await Anni.Cache.suffix(guildID)
-  Msg.prefix = Anni.Commands.prefixed(trigger, prefix)
-  Msg.suffix = Anni.Commands.suffixed(trigger, suffix)
+  // get cached config, note any prefixes used 
+  let config = await Anni.Cache.config(guildID)
+  Msg.prefix = Anni.Commands.prefixed(trigger, config.prefix)
+  Msg.suffix = Anni.Commands.suffixed(trigger, config.suffix)
 
   // if no prefixes/suffixes/mentions - not a command
   if (guildID && !(ding1 || ding2 || Msg.prefix || Msg.suffix)) return
@@ -39,8 +38,8 @@ module.exports = async (Anni, Msg) => {
   if (guildID) Anni.Cache.server(Msg.author.id, guildID)
 
   // if we do have prefixes, remove them from the trigger
-  if (Msg.prefix) trigger = trigger.split(prefix).join('')
-  if (Msg.suffix) trigger = trigger.split(suffix).join('')
+  if (Msg.prefix) trigger = trigger.split(Msg.prefix).join('')
+  if (Msg.suffix) trigger = trigger.split(Msg.suffix).join('')
 
   // get permissions and guild auth
   Msg.perm = Anni.Access.Get(Anni, Msg)
@@ -54,9 +53,6 @@ module.exports = async (Anni, Msg) => {
   // convert the message into a list of arguments
   let [ tags, args ] = Anni.Commands.args(Msg.full)
   Msg.tags = tags; Msg.args = args;
-
-  // store the prefix
-  Msg.prefix = Msg.prefix || prefix
 
   // if command exists, fire it
   let Command = Anni.Commands.Get(Anni, Msg)
