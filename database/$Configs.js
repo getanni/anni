@@ -7,9 +7,6 @@ module.exports = (Model, Types) => {
       prefix: { type: Types.STRING, defaultValue: Model.cfg.defaults.prefix },
       suffix: { type: Types.STRING },
       employ: { type: Types.TEXT,   defaultValue: '[]' },
-      // discord data cache
-      chans: { type: Types.TEXT, defaultValue: '[]' },
-      roles: { type: Types.TEXT, defaultValue: '[]' },
       // birthday configs
       birthday: { type: Types.STRING },
       reminder: { type: Types.TEXT, defaultValue: Model.cfg.defaults.reminder },
