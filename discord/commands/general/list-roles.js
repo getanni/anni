@@ -18,7 +18,7 @@ module.exports = {
   fire: async function (Anni, Msg) {
     let post = Anni.$Copy(this.post)
     await Msg.auth.roles.cache.each(role => {
-      post.desc.push(`\`${role.id}\`<@&${role.id}>`)
+      post.desc.push(`\`${role.id}\` ${role.name}`)
     })
     return Anni.Reply(Msg, post).dm()
   }
