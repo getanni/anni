@@ -24,8 +24,7 @@ module.exports = Anni => {
     admin: function (user) {        return user.hasPermission('ADMINISTRATOR') },
     staff: function (user, guild, mods) {
       // check for a generic mod role
-      let check = role => this.$basic.includes(role.name.toLowerCase())
-      let basic = guild.roles.cache.find(check)
+      let basic = this.$basic(guild)
       if (basic && user.roles.cache.get(basic.id)) return true
       // check for a server-defined mod role
       for (let id of mods) if (user.roles.cache.get(id)) return true
@@ -42,6 +41,11 @@ module.exports = Anni => {
       7: { level: 7, name: 'Owner' },
       9: { level: 9, name: 'Author' }
     },
-    $basic: [ 'mod', 'mods', 'moderator', 'moderators', 'staff' ]
+    $basic: guild => {
+      let basic = [ 'mod', 'mods', 'moderator', 'moderators', 'staff' ]
+      let check = role => basic.includes(role.name.toLowerCase())
+      let found = guild.roles.cache.find(check)
+      return found && found.id ? found : false
+    }
   }
 }
