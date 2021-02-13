@@ -7,21 +7,17 @@ module.exports = Anni => {
       delete this[store][id]
     },
 
-    config: async function (id, obj) {
-      if (!id) return obj || {}
-      let curr = this.$config[id] || {}
-      if (obj) this.$config[id] = { ...curr, ...obj }
-      if (this.$config[id]) return this.$config[id]
-
-      let config = await Anni.$Configs.get(id)
-      let employ = Anni.$list(config.employ)
-
-      curr.prefix = config.prefix
-      curr.suffix = config.prefix
-      curr.employ = employ
-
-      this.$config[id] = curr
-      return curr
+    config: async function (id, update) {
+      if (id) return update || {}
+      if (update || !this.$config[id]) {
+        let config = await Anni.$Configs.get(id)
+        this.$config[id] = {
+          prefix: config.prefix,
+          suffix: config.suffix,
+          employ: Anni.$list(config.employ)
+        }
+      }
+      return this.$config[id]
     },
 
     server: function (id, val) {
