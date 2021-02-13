@@ -93,19 +93,19 @@ module.exports = Anni => {
       return can ? Msg.delete() : false
     },
     prefixed: function (str, prefix) {
-      if (!prefix || str.length < prefix.length) return 0
+      if (!prefix || str.length < prefix.length) return ''
       
       str = str.toLowerCase() 
       prefix = prefix.toLowerCase()
 
       let prefixed = str.indexOf(prefix) === 0
-      return prefixed ? prefix : 0
+      return prefixed ? prefix : ''
     },
     suffixed: function (str, suffix) {
-      if (!suffix || str.length < suffix.length) return 0
+      if (!suffix || str.length < suffix.length) return ''
       let location = str.length - suffix.length
       let suffixed = str.indexOf(suffix) === location
-      return suffixed ? suffix : 0
+      return suffixed ? suffix : ''
     },
 
     Test: async function (Anni, Msg, cmd, str = '') {
