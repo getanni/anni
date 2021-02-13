@@ -31,7 +31,7 @@ module.exports = async (Anni, Msg) => {
   let config = await Anni.Cache.config(guildID)
   Msg.prefix = Anni.Commands.prefixed(trigger, config.prefix)
   Msg.suffix = Anni.Commands.suffixed(trigger, config.suffix)
-  Msg.employ = Anni.$list(config.employs)
+  Msg.employ = Anni.$list(config.employ)
 
   // if no prefixes/suffixes/mentions - not a command
   if (guildID && !(ding1 || ding2 || Msg.prefix || Msg.suffix)) return

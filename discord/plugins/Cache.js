@@ -13,12 +13,12 @@ module.exports = Anni => {
       if (obj) this.$config[id] = { ...curr, ...obj }
       if (this.$config[id]) return this.$config[id]
 
-      let configs = await Anni.$Configs.get(id)
-      let employs = Anni.$list(configs.employs)
+      let config = await Anni.$Configs.get(id)
+      let employ = Anni.$list(config.employ)
 
-      curr.prefix = configs.prefix
-      curr.suffix = configs.prefix
-      curr.employ = employs
+      curr.prefix = config.prefix
+      curr.suffix = config.prefix
+      curr.employ = employ
 
       this.$config[id] = curr
       return curr

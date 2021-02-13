@@ -3,20 +3,21 @@ module.exports = (Model, Types) => {
   Model.$Configs = {
     table: Model.$db.define('configs', {
       // general configs
-      guild:    { type: Types.STRING, unique: true },
-      prefix:   { type: Types.STRING, defaultValue: Model.cfg.defaults.prefix },
-      suffix:   { type: Types.STRING },
+      guild:  { type: Types.STRING, unique: true },
+      prefix: { type: Types.STRING, defaultValue: Model.cfg.defaults.prefix },
+      suffix: { type: Types.STRING },
+      employ: { type: Types.TEXT,   defaultValue: '[]' },
       // discord data cache
-      chans: { type: Types.TEXT,   defaultValue: '[]' },
-      roles: { type: Types.TEXT,   defaultValue: '[]' },
+      chans: { type: Types.TEXT, defaultValue: '[]' },
+      roles: { type: Types.TEXT, defaultValue: '[]' },
       // birthday configs
       birthday: { type: Types.STRING },
       reminder: { type: Types.TEXT, defaultValue: Model.cfg.defaults.reminder },
       announce: { type: Types.TEXT, defaultValue: Model.cfg.defaults.announce },
       // starboard configs
-      board:    { type: Types.STRING },
-      emoji:    { type: Types.STRING,  defaultValue: Model.cfg.defaults.emoji },
-      count:   { type: Types.INTEGER, defaultValue: Model.cfg.defaults.amount }
+      board: { type: Types.STRING },
+      emoji: { type: Types.STRING,  defaultValue: Model.cfg.defaults.emoji },
+      count: { type: Types.INTEGER, defaultValue: Model.cfg.defaults.amount }
     }),
 
     get: async function (guild, skip) {
