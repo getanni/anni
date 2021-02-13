@@ -12,18 +12,29 @@ module.exports = Anni => {
     this.response = Anni.Post.Build(Msg, data, values)
   }
 
-  Anni.Response.prototype.send = function () { return this.reply() }
-
-  Anni.Response.prototype.dm = function (pre) {
-    if (!this.Msg.deleted) this.Msg.react('☑️')
-    // quick and dirty prefix replacement for DMs
-    let temp = JSON.stringify(this.response).split(this.Msg.prefix)
-    if (!pre)  this.response = JSON.parse(temp.join(''))
-    return this.reply(true) 
+  Anni.Response.prototype.send = function (dm) {
+    // return if we can't reply
+    if (!Anni.Bot.Can.Reply(this.Msg)) {
+      this.Msg.err = `Unable to send messages in channel.`
+      return Anni.Commands.log(this.Msg)
+    }
+    // send out all the responses
+    for (let i = 0;i < this.response.length;i++) {
+      // log any errors sending a message
+      let oops = () => Anni.Log(`Couldn't Send Message`)
+      // return on the last response sent
+      let last = i == this.response.length - 1
+      // figure out if we're DMing or responding
+      let auth = dm ? this.Msg.author : this.Msg.channel
+      // send out the response
+      if (!last)  auth.send(...this.response[i]).catch(oops)
+      else return auth.send(...this.response[i]).catch(oops)
+    }
   }
 
   Anni.Response.prototype.flash = async function (long) {
-    let flashed = await this.reply()
+    let flashed = await this.send()
+    // only delete if we're in a guild and not testing
     if (this.Msg.guild && !this.Msg.tests) {
       await Anni.Wait(long ? 10000 : 5000)
       if (flashed && !flashed.deleted) flashed.delete()
@@ -31,22 +42,16 @@ module.exports = Anni => {
   }
 
   Anni.Response.prototype.clean = async function (long) {
+    // only delete if we're in a guild and not testing
     if (this.Msg.guild && !this.Msg.tests) {
       Anni.Commands.clear(this.Msg)
       return this.flash(long)
-    } else return this.reply()
+    } else return this.send()
   }
-  
-  Anni.Response.prototype.reply = function (dm) {
-    if (!Anni.Bot.Can.Reply(this.Msg)) return false
-    for (let i = 0; i < this.response.length; i++) {
-      let last = i == this.response.length - 1
-      let auth = dm ? this.Msg.author : this.Msg.channel
-      // return on last response
-      let error = () => Anni.Log(`Couldn't Send Message.`)
-      if (!last)  auth.send(...this.response[i]).catch(error)
-      else return auth.send(...this.response[i]).catch(error)
-    }
+
+  Anni.Response.prototype.dm = function () {
+    if (!this.Msg.deleted) this.Msg.react('☑️')
+    return this.send(true) 
   }
 
 }
