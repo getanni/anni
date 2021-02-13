@@ -8,7 +8,7 @@ module.exports = Anni => {
     },
 
     config: async function (id, update) {
-      if (id) return update || {}
+      if (!id) return update || {}
       if (update || !this.$config[id]) {
         let config = await Anni.$Configs.get(id)
         this.$config[id] = {
