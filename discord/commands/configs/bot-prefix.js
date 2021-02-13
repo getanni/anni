@@ -25,7 +25,7 @@ module.exports = {
 
     configs.prefix = prefix
     await Anni.$Configs.set(configs)
-    Anni.Cache.config(Msg.auth.id, true)
+    Anni.Cache.config(Msg.auth.id, configs)
 
     return Anni.Reply(Msg, this.lang.done, { prefix }).clean()
   }

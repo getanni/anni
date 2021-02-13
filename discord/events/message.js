@@ -43,7 +43,7 @@ module.exports = async (Anni, Msg) => {
   if (Msg.suffix) trigger = trigger.split(Msg.suffix).join('')
 
   // get permissions and guild auth
-  Msg.perm = Anni.Access.Get(Anni, Msg)
+  Msg.perm = await Anni.Access.Get(Anni, Msg)
   Msg.auth = Msg.guild || Msg.perm.auth
   Msg.full = content.join(' ')
 

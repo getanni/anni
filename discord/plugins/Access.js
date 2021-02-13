@@ -2,16 +2,17 @@
 
 module.exports = Anni => {
   Anni.Access = {
-    Get: function (Anni, Msg) {
+    Get: async function (Anni, Msg) {
       let card = this.badge(1), mods = Msg.employ
       let auth = Msg.guild || Anni.Cache.server(Msg.author.id)
       let user = auth ? auth.members.cache.get(Msg.author.id) : Msg.member
 
       if (user && auth) {
-        if (this.staff(user, auth, mods)) card = this.badge(3)
-        if (this.admin(user))             card = this.badge(5)
-        if (this.owner(user, auth))       card = this.badge(7)
-        if (this.maker(user))             card = this.badge(9)
+        let staff = await this.staff(user, auth, mods)
+        if (staff)                  card = this.badge(3)
+        if (this.admin(user))       card = this.badge(5)
+        if (this.owner(user, auth)) card = this.badge(7)
+        if (this.maker(user))       card = this.badge(9)
       }
 
       return { ...card, auth }
@@ -22,12 +23,12 @@ module.exports = Anni => {
     maker: function (user) {        return Anni.bot.owners.includes(user.id) },
     owner: function (user, guild) { return user.id == guild.ownerID },
     admin: function (user) {        return user.hasPermission('ADMINISTRATOR') },
-    staff: function (user, guild, mods) {
+    staff: async function (user, guild, mods) {
       // check for a generic mod role
       let basic = this.$basic(guild)
-      if (basic && user.roles.cache.get(basic)) return true
+      if (basic && user._roles.includes(basic)) return true
       // check for a server-defined mod role
-      for (let id of mods) if (user.roles.cache.get(id)) return true
+      for (let id of mods) if (user._roles.includes(id)) return true
       return false
     },
 
