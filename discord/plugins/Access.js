@@ -25,7 +25,7 @@ module.exports = Anni => {
     staff: function (user, guild, mods) {
       // check for a generic mod role
       let basic = this.$basic(guild)
-      if (basic && user.roles.cache.get(basic.id)) return true
+      if (basic && user.roles.cache.get(basic)) return true
       // check for a server-defined mod role
       for (let id of mods) if (user.roles.cache.get(id)) return true
       return false
@@ -45,7 +45,7 @@ module.exports = Anni => {
       let basic = [ 'mod', 'mods', 'moderator', 'moderators', 'staff' ]
       let check = role => basic.includes(role.name.toLowerCase())
       let found = guild.roles.cache.find(check)
-      return found && found.id ? found : false
+      return found && found.id ? found.id : false
     }
   }
 }
