@@ -48,7 +48,7 @@ module.exports = {
 
     post.grid.push({ text: footer })
 
-    return Anni.Reply(Msg, post, { perm, prefix }).dm(true)
+    return Anni.Reply(Msg, post, { perm, prefix }).dm()
   },
 
   test: async function (Anni, Msg, Test) {
