@@ -27,9 +27,8 @@ const Logger = winston.createLogger({
 })
 
 module.exports = Model => {
-  Model.Log = (text) => Logger.info(text)
-
-  Model.Tests = (text) => Logger.test(text)
+  Model.Log =      (text) => Logger.info(text)
+  Model.LogTests = (text) => Logger.test(text)
 
   Model.State = (text, name) => Model.Print(text, name)
   Model.Error = (text, name) => Model.Print(text, name, true)
