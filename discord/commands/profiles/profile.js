@@ -58,6 +58,13 @@ module.exports = {
       if (profile.zone) post.desc.push(profile.zone)
       if (profile.star) post.desc.push(profile.star)
       if (profile.opts) post.desc.push(...profile.opts)
+
+      let configs = await Anni.$Configs.get(auth)
+      let roles = Anni.$list(configs.roles)
+      if (roles.length) {
+        post.desc.push(`\n**{guild.name} Roles**`)
+        post.desc.push(`<@&${roles.join('> <@&')}>`)
+      }
     }
 
     Anni.Commands.clear(Msg)

@@ -14,7 +14,9 @@ module.exports = (Model, Types) => {
       // starboard configs
       board: { type: Types.STRING },
       emoji: { type: Types.STRING,  defaultValue: Model.cfg.defaults.emoji },
-      count: { type: Types.INTEGER, defaultValue: Model.cfg.defaults.amount }
+      count: { type: Types.INTEGER, defaultValue: Model.cfg.defaults.amount },
+      // profile configs
+      roles: { type: Types.TEXT, defaultValue: '[]' }
     }),
 
     get: async function (guild, skip) {
