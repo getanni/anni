@@ -46,11 +46,10 @@
 
       <!-- General Content -->
       <v-card-text v-show="open && ($slots.default || $slots.opts)">
-        <slot></slot>
-
         <v-row v-if="$slots.opts">
           <slot name="opts"></slot>
         </v-row>
+        <slot></slot>
       </v-card-text>
 
       <!-- Expansion List -->
