@@ -18,7 +18,7 @@ module.exports = async (Anni, Guild) => {
 
   // send the "welcome" message
   // cache the owner as guild admin
-  Owner.send({ embed: hello })
+  Owner.send({ embed: hello }).catch(() => {})
   Anni.Cache.server(Owner.id, Guild.id)
 
   // cache the server details
