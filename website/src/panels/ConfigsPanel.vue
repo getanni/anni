@@ -245,6 +245,7 @@
         if (this.$rules.bad('ping',  this.announce)) return
         let data = await this.$setConfigs(this.guild, this.currConfigs)
         if (data.configs) this.loadConfigs(data.configs)
+        this.refresh()
       }
     }
   }
