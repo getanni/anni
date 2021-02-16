@@ -117,7 +117,7 @@
     data() { 
       return { 
         prefix: '', suffix: '', board: '', count: '', role: '',
-        birthday: '', reminder: '', announce: '', employ: false,
+        birthday: '', reminder: '', announce: '', employ: [],
         configs: {}, channels: [], rolelist: [], roles: {}
       } 
     },
@@ -157,12 +157,12 @@
         return false
       },
       diffEmploys() {
-        for (let id of this.employ) {
-          if (this.configs.employ.indexOf(id) < 0) return true
-        }
-        for (let id of this.configs.employ) {
-          if (this.employ.indexOf(id) < 0) return true
-        }
+        let curr = this.employ
+        let base = this.configs.employ
+
+        if (!base) return false
+        for (let id of curr) if (base.indexOf(id) < 0) return true
+        for (let id of base) if (curr.indexOf(id) < 0) return true
         return false
       }
     },
