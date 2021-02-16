@@ -64,16 +64,40 @@
         <p>Message must contain either <kbd>{user}</kbd> or <kbd>{users}</kbd>.<br> (for <em><strong>@user</strong></em> and <em><strong>@user's</strong></em> respectively)</p>
         <p>Can optionally include <strong>{date}</strong> for display the date of the birthday. <em>Useful for the reminder message!</em></p>
       </template>
+      <template v-slot:default>
+        <v-select dense outlined label="Announcement Channel"
+          :items="channels" item-text="name" item-value="id" v-model="birthday">
+        </v-select>
+        <v-textarea outlined rows="2" :rules="[ $rules.ping ]"
+          label="Reminder Message" v-model="reminder">
+        </v-textarea>
+        <v-textarea outlined rows="2" :rules="[ $rules.ping ]"
+          label="Announcement Message" v-model="announce">
+        </v-textarea>
+      </template>
+    </box-card>
 
-      <v-select dense outlined label="Announcement Channel"
-        :items="channels" item-text="name" item-value="id" v-model="birthday">
-      </v-select>
-      <v-textarea outlined rows="2" :rules="[ $rules.ping ]"
-        label="Reminder Message" v-model="reminder">
-      </v-textarea>
-      <v-textarea outlined rows="2" :rules="[ $rules.ping ]"
-        label="Announcement Message" v-model="announce">
-      </v-textarea>
+    <!-- Mod Roles -->
+    <box-card v-if="haveConfigs"
+      name="Mod Roles"
+      :save="diffEmploys"
+      @save="saveConfigs"
+      @undo="undoEmploys">
+      <template v-slot:help>
+        <p>The Mod Roles are roles that Anni should recognize as Mods. This will grant access to the Mod Commands to users with these roles.</p>
+        <p>Anni will automatically recognize roles named "Mod" but if your mod role is named "Boss Members", this is where you tell Anni that.</p>
+      </template>
+      <template v-slot:default>
+        <v-select dense outlined label="Add Mod Role" 
+          append-outer-icon="mdi-plus-circle" @click:append-outer="_addRole()"
+          :items="rolelist" item-text="name" item-value="id" v-model="role">
+        </v-select>
+
+        <v-chip v-for="(id, i) in employ" :key="id"
+          class="mr-2 mb-2" close @click:close="_remRole(i)">
+          {{ roles[id] }}
+        </v-chip>
+      </template>
     </box-card>
 
     <!-- Refresh -->
@@ -92,9 +116,9 @@
     props: [ 'user', 'guild' ],
     data() { 
       return { 
-        prefix: '', suffix: '', board: '', count: '',
-        birthday: '', reminder: '', announce: '', 
-        configs: {}, channels: []
+        prefix: '', suffix: '', board: '', count: '', role: '',
+        birthday: '', reminder: '', announce: '', employ: false,
+        configs: {}, channels: [], rolelist: [], roles: {}
       } 
     },
     mounted() { this.renderPanel() },
@@ -113,6 +137,7 @@
         configs.announce = this.announce
         configs.board    = this.board
         configs.count    = this.count
+        configs.employ   = JSON.stringify(this.employ)
         return configs
       },
       diffTrigger() {
@@ -130,13 +155,36 @@
         if (this.board != this.configs.board) return true
         if (this.count != this.configs.count) return true
         return false
+      },
+      diffEmploys() {
+        for (let id of this.employ) {
+          if (this.configs.employ.indexOf(id) < 0) return true
+        }
+        for (let id of this.configs.employ) {
+          if (this.employ.indexOf(id) < 0) return true
+        }
+        return false
       }
     },
     methods: {
       refresh() { setTimeout(this.$redrawVueMasonry, 50) },
 
+      _addRole() {
+        if (!this.role || this.employ.indexOf(this.role) > -1) return
+        this.employ.push(this.role)
+        this.role = ''
+        this.refresh()
+      },
+      _remRole(i) {
+        this.employ.splice(i, 1)
+        this.refresh()
+      },
+
       loadConfigs(configs) {
         configs = this.$nulls(configs)
+        configs.employ = configs.employ ? JSON.parse(configs.employ) : []
+        if (configs.employ)   this.employ = this.$clone(configs.employ)
+
         if (configs.opts)     this.loadDetails(configs.opts)
         if (configs.prefix)   this.prefix = configs.prefix
         if (configs.suffix)   this.suffix = configs.suffix
@@ -151,9 +199,18 @@
       loadDetails(details) {
         if (details.chans) {
           this.channels = [{ id: '', name: 'No Channel' }]
-          for (let channel of JSON.parse(details.chans)) {
-            let chan = channel.split(':')
+          for (let data of JSON.parse(details.chans)) {
+            let chan = data.split(':')
             this.channels.push({ id: chan[0], name: chan[1] })
+          }
+        }
+        if (details.roles) {
+          this.roles[0] = 'No Role'
+          this.rolelist = [{ id: '', name: 'No Role' }]
+          for (let data of JSON.parse(details.roles)) {
+            let role = data.split(':')
+            this.roles[role[0]] = role[1]
+            this.rolelist.push({ id: role[0], name: role[1] })
           }
         }
       },
@@ -169,6 +226,10 @@
       undoStarred() {
         this.board = this.configs.board
         this.count = this.configs.count
+      },
+      undoEmploys() {
+        let employs = this.configs.employ
+        this.employ = this.$clone(employs)
       },
 
       async renderPanel() {
