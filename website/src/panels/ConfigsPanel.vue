@@ -89,13 +89,36 @@
       </template>
       <template v-slot:default>
         <v-select dense outlined label="Add Mod Role" 
+          append-outer-icon="mdi-plus-circle" @click:append-outer="_addMods()"
+          :items="rolelist" item-text="name" item-value="id" v-model="mods">
+        </v-select>
+
+        <v-chip v-for="(id, i) in employ" :key="id"
+          class="mr-2 mb-2" close @click:close="_remMods(i)">
+          {{ rolenames[id] }}
+        </v-chip>
+      </template>
+    </box-card>
+
+    <!-- Profile Roles -->
+    <box-card v-if="haveConfigs"
+      name="Profile Roles"
+      :save="diffVisible"
+      @save="saveConfigs"
+      @undo="undoVisible">
+      <template v-slot:help>
+        <p>The Profile Roles are the roles that Anni will display on the server profile.</p>
+        <p>This is useful if you've already got roles for descriptive things, like Age, Location, Gender, and the like.</p>
+      </template>
+      <template v-slot:default>
+        <v-select dense outlined label="Add Mod Role" 
           append-outer-icon="mdi-plus-circle" @click:append-outer="_addRole()"
           :items="rolelist" item-text="name" item-value="id" v-model="role">
         </v-select>
 
-        <v-chip v-for="(id, i) in employ" :key="id"
+        <v-chip v-for="(id, i) in roles" :key="id"
           class="mr-2 mb-2" close @click:close="_remRole(i)">
-          {{ roles[id] }}
+          {{ rolenames[id] }}
         </v-chip>
       </template>
     </box-card>
@@ -116,9 +139,9 @@
     props: [ 'user', 'guild' ],
     data() { 
       return { 
-        prefix: '', suffix: '', board: '', count: '', role: '',
-        birthday: '', reminder: '', announce: '', employ: [],
-        configs: {}, channels: [], rolelist: [], roles: {}
+        prefix: '', suffix: '', board: '', count: '', mods: '', role: '',
+        birthday: '', reminder: '', announce: '', employ: [], roles: [],
+        configs: {}, channels: [], rolelist: [], rolenames: {}
       } 
     },
     mounted() { this.renderPanel() },
@@ -138,6 +161,7 @@
         configs.board    = this.board
         configs.count    = this.count
         configs.employ   = JSON.stringify(this.employ)
+        configs.roles    = JSON.stringify(this.roles)
         return configs
       },
       diffTrigger() {
@@ -164,26 +188,47 @@
         for (let id of curr) if (base.indexOf(id) < 0) return true
         for (let id of base) if (curr.indexOf(id) < 0) return true
         return false
+      },
+      diffVisible() {
+        let curr = this.roles
+        let base = this.configs.roles
+
+        if (!base) return false
+        for (let id of curr) if (base.indexOf(id) < 0) return true
+        for (let id of base) if (curr.indexOf(id) < 0) return true
+        return false
       }
     },
     methods: {
       refresh() { setTimeout(this.$redrawVueMasonry, 50) },
 
+      _addMods() {
+        if (!this.mods || this.employ.indexOf(this.mods) > -1) return
+        this.employ.push(this.mods)
+        this.mods = ''
+        this.refresh()
+      },
+      _remMods(i) {
+        this.employ.splice(i, 1)
+        this.refresh()
+      },
       _addRole() {
-        if (!this.role || this.employ.indexOf(this.role) > -1) return
-        this.employ.push(this.role)
+        if (!this.role || this.roles.indexOf(this.role) > -1) return
+        this.roles.push(this.role)
         this.role = ''
         this.refresh()
       },
       _remRole(i) {
-        this.employ.splice(i, 1)
+        this.roles.splice(i, 1)
         this.refresh()
       },
 
       loadConfigs(configs) {
         configs = this.$nulls(configs)
+        configs.roles = configs.roles ? JSON.parse(configs.roles) : []
         configs.employ = configs.employ ? JSON.parse(configs.employ) : []
         if (configs.employ)   this.employ = this.$clone(configs.employ)
+        if (configs.roles)    this.roles = this.$clone(configs.roles)
 
         if (configs.opts)     this.loadDetails(configs.opts)
         if (configs.prefix)   this.prefix = configs.prefix
@@ -205,11 +250,11 @@
           }
         }
         if (details.roles) {
-          this.roles[0] = 'No Role'
+          this.rolenames[0] = 'No Role'
           this.rolelist = [{ id: '', name: 'No Role' }]
           for (let data of JSON.parse(details.roles)) {
             let role = data.split(':')
-            this.roles[role[0]] = role[1]
+            this.rolenames[role[0]] = role[1]
             this.rolelist.push({ id: role[0], name: role[1] })
           }
         }
@@ -230,6 +275,10 @@
       undoEmploys() {
         let employs = this.configs.employ
         this.employ = this.$clone(employs)
+      },
+      undoVisible() {
+        let roles = this.configs.roles
+        this.roles = this.$clone(roles)
       },
 
       async renderPanel() {
