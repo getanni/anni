@@ -70,7 +70,7 @@
         <!-- Save Button -->
         <v-fab-transition>
           <v-btn fab v-show="open && save"
-            color="primary" @click="$emit('undo')">
+            color="primary" @click="$emit('save')">
             <v-icon>mdi-content-save</v-icon>
           </v-btn>
         </v-fab-transition>
