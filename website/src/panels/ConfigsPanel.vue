@@ -28,6 +28,29 @@
       </template>
     </box-card>
 
+    <!-- Mod Roles -->
+    <box-card v-if="haveConfigs"
+      name="Mod Roles"
+      :save="diffEmploys"
+      @save="saveConfigs"
+      @undo="undoEmploys">
+      <template v-slot:help>
+        <p>The Mod Roles are roles that Anni should recognize as Mods. This will grant access to the Mod Commands to users with these roles.</p>
+        <p>Anni will automatically recognize roles named "Mod" but if your mod role is named "Boss Members", this is where you tell Anni that.</p>
+      </template>
+      <template v-slot:default>
+        <v-select dense outlined label="Add Mod Role" 
+          append-outer-icon="mdi-plus-circle" @click:append-outer="_addMods()"
+          :items="rolelist" item-text="name" item-value="id" v-model="mods">
+        </v-select>
+
+        <v-chip v-for="(id, i) in employ" :key="id"
+          class="mr-2 mb-2" close @click:close="_remMods(i)">
+          {{ rolenames[id] }}
+        </v-chip>
+      </template>
+    </box-card>
+
     <!-- Starboard Settings -->
     <box-card v-if="haveConfigs"
       name="Starboard"
@@ -77,29 +100,6 @@
       </template>
     </box-card>
 
-    <!-- Mod Roles -->
-    <box-card v-if="haveConfigs"
-      name="Mod Roles"
-      :save="diffEmploys"
-      @save="saveConfigs"
-      @undo="undoEmploys">
-      <template v-slot:help>
-        <p>The Mod Roles are roles that Anni should recognize as Mods. This will grant access to the Mod Commands to users with these roles.</p>
-        <p>Anni will automatically recognize roles named "Mod" but if your mod role is named "Boss Members", this is where you tell Anni that.</p>
-      </template>
-      <template v-slot:default>
-        <v-select dense outlined label="Add Mod Role" 
-          append-outer-icon="mdi-plus-circle" @click:append-outer="_addMods()"
-          :items="rolelist" item-text="name" item-value="id" v-model="mods">
-        </v-select>
-
-        <v-chip v-for="(id, i) in employ" :key="id"
-          class="mr-2 mb-2" close @click:close="_remMods(i)">
-          {{ rolenames[id] }}
-        </v-chip>
-      </template>
-    </box-card>
-
     <!-- Profile Roles -->
     <box-card v-if="haveConfigs"
       name="Profile Roles"
@@ -127,7 +127,7 @@
     <box-card v-if="haveConfigs">
       <div class="text-center">
         Channels or roles out of date? <br>
-        Run <strong>anni.refresh</strong> in your server.
+        Run the <strong>refresh</strong> command in your server.
       </div>
     </box-card>
   </v-row>
