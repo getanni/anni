@@ -1,6 +1,6 @@
 <template>
   <v-row v-masonry @click="refresh">
-    <box-card v-if="haveConfigs"
+    <box-card hide v-if="haveConfigs"
       name="Triggers"
       :save="diffTrigger"
       @save="saveConfigs"
@@ -29,7 +29,7 @@
     </box-card>
 
     <!-- Mod Roles -->
-    <box-card v-if="haveConfigs"
+    <box-card hide v-if="haveConfigs"
       name="Mod Roles"
       :save="diffEmploys"
       @save="saveConfigs"
@@ -52,7 +52,7 @@
     </box-card>
 
     <!-- Starboard Settings -->
-    <box-card v-if="haveConfigs"
+    <box-card hide v-if="haveConfigs"
       name="Starboard"
       :save="diffStarred"
       @save="saveConfigs"
@@ -77,8 +77,8 @@
     </box-card>
 
     <!-- Birthday Settings -->
-    <box-card v-if="haveConfigs"
-      name="Announcements"
+    <box-card hide v-if="haveConfigs"
+      name="Birthdays"
       :save="diffReminds"
       @save="saveConfigs"
       @undo="undoReminds">
@@ -101,7 +101,7 @@
     </box-card>
 
     <!-- Profile Roles -->
-    <box-card v-if="haveConfigs"
+    <box-card hide v-if="haveConfigs"
       name="Profile Roles"
       :save="diffVisible"
       @save="saveConfigs"
