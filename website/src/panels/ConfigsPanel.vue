@@ -111,7 +111,7 @@
         <p>This is useful if you've already got roles for descriptive things, like Age, Location, Gender, and the like.</p>
       </template>
       <template v-slot:default>
-        <v-select dense outlined label="Add Mod Role" 
+        <v-select dense outlined label="Add Profile Role" 
           append-outer-icon="mdi-plus-circle" @click:append-outer="_addRole()"
           :items="rolelist" item-text="name" item-value="id" v-model="role">
         </v-select>
