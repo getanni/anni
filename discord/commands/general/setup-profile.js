@@ -41,6 +41,7 @@ module.exports = {
     Anni.Reply(Msg, this.post).dm()
 
     // check for any server profile options
+    if (!Msg.auth) return
     let post = { head: this.lang.head, desc: this.lang.desc, grid: [] }
     let list = await Anni.$Options.all(Msg.auth.id)
     if (!list) return false
