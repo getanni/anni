@@ -35,6 +35,15 @@ module.exports = {
     if (list) for (let opt of list) {
       let item = "`" + opt.tag + "`" + ` **${opt.name}**`
       if (opt.desc) item += ` - *${opt.desc}*`
+      let list = Anni.$list(opt.roles)
+      if (list.length) {
+        item += `\n*Required:`
+        for (let id of list) {
+          let role = Anni.Bot.Role(Msg, id)
+          item += ` ${role.name || id}`
+        }
+        item += `*\n`
+      }
       post.desc.push(item, '')
     } else post.desc.push(this.lang.empty, '')
     if (list) post.desc.push(this.lang.rem, this.lang.edit)

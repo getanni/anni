@@ -7,7 +7,8 @@ module.exports = (Model, Types) => {
       desc:  { type: Types.STRING },
       data:  { type: Types.TEXT },
       user:  { type: Types.STRING },
-      guild: { type: Types.STRING }
+      guild: { type: Types.STRING },
+      roles: { type: Types.TEXT, defaultValue: '[]' }
     }),
 
     get: async function (guild, tag, user = '@everyone') {

@@ -25,11 +25,17 @@ module.exports = {
   fire: async function (Anni, Msg) {
     let [ tag, data ] = Anni.Arr.pair(Msg.args)
     let user = Msg.author.id, guild = Msg.auth.id
+    let member = Anni.Bot.Member(Msg.auth, user)
 
     // make sure the tag exists
     let current = await Anni.$Options.get(guild, tag)
     let  exists = Anni.$Good(current)
     if (!exists) return Anni.Reply(Msg, this.lang.none, { tag }).clean()
+
+    // ignore if there's a missing role requirement
+    let roles = Anni.$list(current.roles), access = false
+    for (let id of roles) if (member._roles.includes(id)) access = true
+    if (roles.length && !access) return false
 
     let options = await Anni.$Options.get(guild, tag, user)
     if (options.id) current.id = options.id

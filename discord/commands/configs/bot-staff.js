@@ -46,22 +46,21 @@ module.exports = {
       return Anni.Reply(Msg, post).dm()
     } else {
       // else toggle the roles a staff role
-      let role = Anni.Str.strip(Msg.full)
-      let byID = r => r.id == role
-      let data = Msg.auth.roles.cache.find(byID)
-      // return if the role doesn't exist
-      if (!data) return Anni.Reply(Msg, this.lang.err).send()
-      let index = employ.indexOf(role)
-      // add a non-staff role, remove a staff role
-      if (index < 0) employ.push(role)
+      let role = Anni.Bot.Role(Msg, Msg.full)
+      if (!role) return Anni.Reply(Msg, this.lang.err).send()
+
+      // set the role based on already set
+      let index = employ.indexOf(role.id)
+      if (index < 0) employ.push(role.id)
       else employ.splice(index, 1)
 
+      // set the new role in configs
       config.employ = JSON.stringify(employ)
       await Anni.$Configs.set(config)
       Anni.Cache.config(Msg.auth.id, config)
-      
+
       let message = index < 0 ? this.lang.add : this.lang.rem
-      return Anni.Reply(Msg, message, { role: data.name }).send()
+      return Anni.Reply(Msg, message, { role: role.name }).send()
     }
   }
 }

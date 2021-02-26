@@ -40,6 +40,13 @@ module.exports = Anni => {
 
       return auth ? chan : false
     },
+    Role: function (Msg, str) {
+      str = Anni.Str.strip(str)
+      if (!Msg.auth) return false
+
+      let byID = role => role.id == str
+      return Msg.auth.roles.cache.find(byID)
+    },
 
     Can: {
       check(Msg, flag, channel) {

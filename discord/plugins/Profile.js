@@ -48,7 +48,13 @@ module.exports = Anni => {
     opts: async function (user, guild) {
       let results = [], options = await Anni.$Options.all(guild, user)
       if (options) for (let opt of options) {
-        results.push(`\n**${opt.name}**\n${opt.data}`)
+        // ignore any role gated options
+        let server = Anni.Bot.Server(guild)
+        let member = Anni.Bot.Member(server, user)
+        let roles = Anni.$list(opt.roles), access = false
+        for (let id of roles) if (member._roles.includes(id)) access = true
+
+        if (access || !roles.length) results.push(`\n**${opt.name}**\n${opt.data}`)
       } return results
     },
 

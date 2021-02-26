@@ -45,10 +45,17 @@ module.exports = {
     let list = await Anni.$Options.all(Msg.auth.id)
     if (!list) return false
     for (let opt of list) {
-      let info = `**${opt.name}** - *${opt.desc}*`
-      let more = `{{ ~/set ${opt.tag} (your text) }}`
-      let wipe = `{{ ~/wipe ${opt.tag} }}`
-      post.grid.push({ text: `${info} ${more} ${wipe}`})
+      // ignore any role gated options
+      let member = Anni.Bot.Member(Msg.auth, Msg.author.id)
+      let roles = Anni.$list(opt.roles), access = false
+      for (let id of roles) if (member._roles.includes(id)) access = true
+
+      if (access || !roles.length) {
+        let info = `**${opt.name}** - *${opt.desc}*`
+        let more = `{{ ~/set ${opt.tag} (your text) }}`
+        let wipe = `{{ ~/wipe ${opt.tag} }}`
+        post.grid.push({ text: `${info} ${more} ${wipe}`})
+      }
     }
     return Anni.Reply(Msg, post).dm()
   }
