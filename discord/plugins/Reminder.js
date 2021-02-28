@@ -36,7 +36,7 @@ module.exports = Anni => {
     },
     sort: async function (list) {
       let data = {}; for (let profile of list) {
-        let servers = JSON.parse(profile.list)
+        let servers = Anni.$list(profile.list)
         for (let guild of servers) {
           let configs = await Anni.$Configs.get(guild) 
           if (configs.birthday) {
